@@ -8,17 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var model = TimerViewModel()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+            ZStack{
+                if model.sessionState == .ended {
+                    HomeView()
+                }else{
+                    TimerView()
+                }
+            }
+            .environmentObject(model)
     }
 }
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
