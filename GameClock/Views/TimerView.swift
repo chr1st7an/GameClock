@@ -211,8 +211,6 @@ struct TimerView: View {
                             Image(systemName: "gearshape.fill")
                         }.foregroundColor(.black)
                     }
-                    
-                    
                 }
             }
             .onAppear {

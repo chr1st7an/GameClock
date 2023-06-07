@@ -18,123 +18,65 @@ struct RuleBookView: View {
         NavigationView {
             VStack{
                 ScrollView(.vertical) {
-                    VStack(spacing: 15){
-                        HStack{
-                            Text("Format").font(.custom(
-                                "RobotoRound",
-                                fixedSize: 28))
-                            Spacer()
-                            Button {
-                                withAnimation(.easeIn) {
-                                    showingFormat.toggle()
-                                }
-                            } label: {
-                                Text(showingFormat ? "hide" : "show")
-                            }
-                        }.padding(.horizontal, 25)
-                        if showingFormat{
-                            ForEach(values: format) { rule in
-                                ruleCard(rule: rule)
-                            }
-                        }
-                    }.padding()
-                    VStack(spacing: 15){
-                        HStack{
-                            Text("Rules").font(.custom(
-                                "RobotoRound",
-                                fixedSize: 28))
-                            Spacer()
-                            Button {
-                                withAnimation(.easeIn) {
-                                    showingRules.toggle()
-                                }
-                            } label: {
-                                Text(showingRules ? "hide" : "show")
-                            }
-                        }.padding(.horizontal, 25)
-                        if showingRules{
-                            ForEach(values: rules) { rule in
-                                ruleCard(rule: rule)
-                            }
-                        }
-                    }.padding()
-                    VStack(spacing: 15){
-                        HStack{
-                            Text("Teams").font(.custom(
-                                "RobotoRound",
-                                fixedSize: 28))
-                            Spacer()
-                            Button {
-                                withAnimation(.easeIn) {
-                                    showingTeams.toggle()
-                                }
-                            } label: {
-                                Text(showingTeams ? "hide" : "show")
-                            }
-                        }.padding(.horizontal, 25)
-                        if showingTeams{
-                            ForEach(values: teams) { rule in
-                                ruleCard(rule: rule)
-                            }
-                        }
-                    }.padding()
-                    VStack(spacing: 15){
-                        HStack{
-                            Text("Numbers").font(.custom(
-                                "RobotoRound",
-                                fixedSize: 28))
-                            Spacer()
-                            Button {
-                                withAnimation(.easeIn) {
-                                    showingNumbers.toggle()
-                                }
-                            } label: {
-                                Text(showingNumbers ? "hide" : "show")
-                            }
-                        }.padding(.horizontal, 25)
-                        if showingNumbers{
-                            ForEach(values: numbers) { rule in
-                                ruleCard(rule: rule)
-                            }
-                        }
-                    }.padding()
-                    VStack(spacing: 15){
-                        HStack{
-                            Text("Game Captain Tips").font(.custom(
-                                "RobotoRound",
-                                fixedSize: 28))
-                            Spacer()
-                            Button {
-                                withAnimation(.easeIn) {
-                                    showingTips.toggle()
-                                }
-                            } label: {
-                                Text(showingTips ? "hide" : "show")
-                            }
-                        }.padding(.horizontal, 25)
-                        if showingTips{
-                            ForEach(values: gameCaptainTips) { rule in
-                                ruleCard(rule: rule)
-                            }
-                        }
-                    }.padding()
+                    ruleSection(toggleVal:$showingFormat,header: "Format", ruleSet: format, iconName: "sportscourt.fill")
+                    ruleSection(toggleVal:$showingRules,header: "Rules", ruleSet: rules, iconName: "figure.soccer")
+                    ruleSection(toggleVal:$showingTeams,header: "Teams", ruleSet: teams, iconName: "person.3.sequence.fill")
+                    ruleSection(toggleVal:$showingTips,header: "Captain Tips", ruleSet: gameCaptainTips, iconName: "person.badge.shield.checkmark")
                       }
-            }.navigationTitle("RuleBook")
+            }.navigationTitle("Rule Book")
         }
     }
 }
-
+struct ruleSection: View{
+    @Binding var toggleVal: Bool
+    var header: String
+    var ruleSet : [String]
+    var iconName: String
+    var body: some View{
+        VStack(spacing:20){
+            VStack {
+                HStack{
+                    Text(header).font(.custom(
+                        "RobotoRound",
+                        fixedSize: 28))
+                    Image(systemName: iconName)
+                    Spacer()
+                    Button {
+                        withAnimation(.easeIn) {
+                            toggleVal.toggle()
+                        }
+                    } label: {
+                        Text(toggleVal ? "hide" : "show").foregroundColor(STFCpink)
+                    }
+                }.padding(.horizontal, 25)
+                Divider().padding(.horizontal)
+            }
+            if toggleVal{
+                ForEach(values: ruleSet) { rule in
+                    ruleCard(rule: rule).padding(.vertical)
+                }
+            }
+            
+        }.padding()
+    }
+}
 struct ruleCard: View{
     let rule : String
     var body: some View{
         GeometryReader{proxy in
             HStack{
-                Image(systemName: "plus")
-                Text(rule)
-            }.padding(.horizontal)
+                Image(systemName: "minus").foregroundColor(.gray)
+                Text(rule).font(.custom(
+                    "RobotoRound",
+                    fixedSize: 14)).lineLimit(4).multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
+            }.padding(.horizontal).frame(width: proxy.size.width * 1, height: 50, alignment: .leading)
+                .background {
+                    Capsule().fill(STFCgreen.opacity(0.3)).offset(x: -(proxy.size.width * 0.09) / 2).clipped()                }
+//                .background(STFCgreen.opacity(0.2), in: Capsule())
         }
     }
 }
+
 extension ForEach where Data.Element: Hashable, ID == Data.Element, Content: View {
     init(values: Data, content: @escaping (Data.Element) -> Content) {
         self.init(values, id: \.self, content: content)
@@ -142,25 +84,41 @@ extension ForEach where Data.Element: Hashable, ID == Data.Element, Content: Vie
 }
 
 let format = [
-    "Each match is 1 hour long", "Each game is 4 mins long","We play as many games as possible during a 1 hour match","Games end after 4 mins or after one team scores 3 goals","Winner stays on","In case of tie, newest team stays on", "No goalies","No PKs"
+    "Each match is 1 hour long", "Each game is 4 mins long","Games end after 4 mins or after one team scores 3 goals","Winner stays on","In case of tie, newest team stays on", "No goalies","No PKs","We play as many games as possible during a 1 hour match"
 ]
 let teams = [
-    "There are 3 teams per match","Each teams is made up of either 4 of 5 players (depending on court size)","Maximum of 15 players/match"
+    "There are 3 teams per match","Each teams is made up of either 4 of 5 players (depending on court size)","Maximum of 15 players/match", "If there are too few players to make up 3 even teams, members of losing team can join the team coming on",
+    
+    "If the number of players drop, the following scenarios can happen:",
+
+    "15 Players = 3 teams of 5",
+
+    "12 Players = 3 teams of 4",
+
+    "10-11 Players = 2 teams of 4, 1 incomplete team who borrows players from losing team",
+
+    "8-9 Players = 2 Teams of 4 with 1 player being replaced from losing team by player waiting",
+
+    "Less than 8 Players = Match is abandoned below 8 players"
 ]
 let rules = [
     "All goals must be scored over halfway line",
 
-    "All stoppages are restarted with kick-ins (e.g. corners, out of bounds, handball)",
+    "All stoppages are restarted with kick-ins",
 
-    "Kick-ins after goals should be taken from between goal posts, no further than 3 ft from goal-line",
+    "Kick-ins after goals should be taken from between goal posts",
 
-    "Handball when ball is going into goal / foul that denies clear goal counts as a goal",
+    "Handball when ball is going into goal counts as a goal",
+    
+    "Foul that denies clear goal counts as a goal",
+    
+    "Players can score directly from corner kicks",
 
-    "Killer Goal: When first goal of a game is scored with a one-touch shot / header from an aerial pass without it touching the ground, the scoring team automatically wins the game",
+    "Killer Goal: if the first goal of a game is a one-touch shot / header from an aerial pass, the scoring team automatically wins the game",
 
 ]
 let numbers = [
-    "If there are too few players to make up 3 even-sized teams, or if there is an injury / late arrival / early departure, members of team coming off (after a loss) can join the team coming on",
+    "If there are too few players to make up 3 even teams, members of losing team can join the team coming on",
 
     "If the number of players drop, the following scenarios can happen:",
 

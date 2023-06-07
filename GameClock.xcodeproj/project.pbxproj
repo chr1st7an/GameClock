@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		363B1D712A2FE99D0041AEDE /* GolGolGol.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D702A2FE99C0041AEDE /* GolGolGol.mp3 */; };
+		363B1D742A2FE9BB0041AEDE /* What-a-Save.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D732A2FE9BB0041AEDE /* What-a-Save.mp3 */; };
+		363B1D762A2FE9CD0041AEDE /* Martin-Tyler1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D752A2FE9CD0041AEDE /* Martin-Tyler1.mp3 */; };
+		363B1D782A2FE9FD0041AEDE /* Martin-Tyler2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D772A2FE9FD0041AEDE /* Martin-Tyler2.mp3 */; };
+		363B1D7A2A2FEA0D0041AEDE /* Ankara-Messi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D792A2FEA0D0041AEDE /* Ankara-Messi.mp3 */; };
+		363B1D7D2A2FEA330041AEDE /* SIUUU.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D7C2A2FEA330041AEDE /* SIUUU.mp3 */; };
+		363B1D7F2A2FFABE0041AEDE /* Booing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D7E2A2FFABE0041AEDE /* Booing.mp3 */; };
+		363B1D812A2FFACD0041AEDE /* Sirens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D802A2FFACD0041AEDE /* Sirens.mp3 */; };
+		363B1D832A30004F0041AEDE /* Victory-chant.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D822A30004F0041AEDE /* Victory-chant.mp3 */; };
 		36940BD629FC578F006B7B6D /* GameClockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36940BD529FC578F006B7B6D /* GameClockApp.swift */; };
 		36940BD829FC578F006B7B6D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36940BD729FC578F006B7B6D /* ContentView.swift */; };
 		36940BDA29FC5791006B7B6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36940BD929FC5791006B7B6D /* Assets.xcassets */; };
@@ -18,8 +27,8 @@
 		369E48052A20274F0007F18E /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369E48042A20274F0007F18E /* AudioManager.swift */; };
 		369E480B2A202C8E0007F18E /* 30_sec_male1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E480A2A202C8E0007F18E /* 30_sec_male1.mp3 */; };
 		369E48122A21685D0007F18E /* final_whistle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48112A21685D0007F18E /* final_whistle.mp3 */; };
-		369E48162A21688D0007F18E /* defense_chant.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48142A21688D0007F18E /* defense_chant.mp3 */; };
-		369E48172A21688D0007F18E /* goal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48152A21688D0007F18E /* goal.mp3 */; };
+		369E48162A21688D0007F18E /* Defense-chant.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48142A21688D0007F18E /* Defense-chant.mp3 */; };
+		369E48172A21688D0007F18E /* GOAL.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48152A21688D0007F18E /* GOAL.mp3 */; };
 		369E481B2A216D000007F18E /* 5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E481A2A216D000007F18E /* 5.mp3 */; };
 		369E481D2A216D050007F18E /* 2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E481C2A216D050007F18E /* 2.mp3 */; };
 		369E481F2A216D370007F18E /* 1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E481E2A216D370007F18E /* 1.mp3 */; };
@@ -28,8 +37,7 @@
 		369E48272A2984660007F18E /* empty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48262A2984660007F18E /* empty.mp3 */; };
 		369E482F2A2A00730007F18E /* SoundBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369E482E2A2A00730007F18E /* SoundBoardView.swift */; };
 		369E48312A2A007E0007F18E /* RuleBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369E48302A2A007E0007F18E /* RuleBookView.swift */; };
-		369E48352A2A15170007F18E /* aguero.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48342A2A15170007F18E /* aguero.mp3 */; };
-		369E48392A2A15FD0007F18E /* ole.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48382A2A15FD0007F18E /* ole.mp3 */; };
+		369E48392A2A15FD0007F18E /* OleOleOle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48382A2A15FD0007F18E /* OleOleOle.mp3 */; };
 		369E483F2A2A752E0007F18E /* 1_min_male1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E483E2A2A752E0007F18E /* 1_min_male1.mp3 */; };
 		369E48432A2A75BC0007F18E /* 2_min_male1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48422A2A75BC0007F18E /* 2_min_male1.mp3 */; };
 		369E48452A2A75EC0007F18E /* 3_min_male1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E48442A2A75EC0007F18E /* 3_min_male1.mp3 */; };
@@ -47,6 +55,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		363B1D6C2A2FE38C0041AEDE /* AGUEROOO.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = AGUEROOO.mp3; path = ../../../../../AGUEROOO.mp3; sourceTree = "<group>"; };
+		363B1D702A2FE99C0041AEDE /* GolGolGol.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = GolGolGol.mp3; sourceTree = "<group>"; };
+		363B1D732A2FE9BB0041AEDE /* What-a-Save.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "What-a-Save.mp3"; sourceTree = "<group>"; };
+		363B1D752A2FE9CD0041AEDE /* Martin-Tyler1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Martin-Tyler1.mp3"; sourceTree = "<group>"; };
+		363B1D772A2FE9FD0041AEDE /* Martin-Tyler2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Martin-Tyler2.mp3"; sourceTree = "<group>"; };
+		363B1D792A2FEA0D0041AEDE /* Ankara-Messi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Ankara-Messi.mp3"; sourceTree = "<group>"; };
+		363B1D7C2A2FEA330041AEDE /* SIUUU.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SIUUU.mp3; sourceTree = "<group>"; };
+		363B1D7E2A2FFABE0041AEDE /* Booing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Booing.mp3; sourceTree = "<group>"; };
+		363B1D802A2FFACD0041AEDE /* Sirens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Sirens.mp3; sourceTree = "<group>"; };
+		363B1D822A30004F0041AEDE /* Victory-chant.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Victory-chant.mp3"; sourceTree = "<group>"; };
 		36940BD229FC578F006B7B6D /* GameClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36940BD529FC578F006B7B6D /* GameClockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClockApp.swift; sourceTree = "<group>"; };
 		36940BD729FC578F006B7B6D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,8 +79,8 @@
 		369E480A2A202C8E0007F18E /* 30_sec_male1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 30_sec_male1.mp3; sourceTree = "<group>"; };
 		369E480C2A202E130007F18E /* GameClock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GameClock.entitlements; sourceTree = "<group>"; };
 		369E48112A21685D0007F18E /* final_whistle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = final_whistle.mp3; sourceTree = "<group>"; };
-		369E48142A21688D0007F18E /* defense_chant.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = defense_chant.mp3; sourceTree = "<group>"; };
-		369E48152A21688D0007F18E /* goal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = goal.mp3; sourceTree = "<group>"; };
+		369E48142A21688D0007F18E /* Defense-chant.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Defense-chant.mp3"; sourceTree = "<group>"; };
+		369E48152A21688D0007F18E /* GOAL.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = GOAL.mp3; sourceTree = "<group>"; };
 		369E481A2A216D000007F18E /* 5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 5.mp3; sourceTree = "<group>"; };
 		369E481C2A216D050007F18E /* 2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 2.mp3; sourceTree = "<group>"; };
 		369E481E2A216D370007F18E /* 1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 1.mp3; sourceTree = "<group>"; };
@@ -71,8 +89,7 @@
 		369E48262A2984660007F18E /* empty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = empty.mp3; sourceTree = "<group>"; };
 		369E482E2A2A00730007F18E /* SoundBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundBoardView.swift; sourceTree = "<group>"; };
 		369E48302A2A007E0007F18E /* RuleBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleBookView.swift; sourceTree = "<group>"; };
-		369E48342A2A15170007F18E /* aguero.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = aguero.mp3; path = ../../../../aguero.mp3; sourceTree = "<group>"; };
-		369E48382A2A15FD0007F18E /* ole.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ole.mp3; sourceTree = "<group>"; };
+		369E48382A2A15FD0007F18E /* OleOleOle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = OleOleOle.mp3; sourceTree = "<group>"; };
 		369E483E2A2A752E0007F18E /* 1_min_male1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 1_min_male1.mp3; sourceTree = "<group>"; };
 		369E48422A2A75BC0007F18E /* 2_min_male1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 2_min_male1.mp3; sourceTree = "<group>"; };
 		369E48442A2A75EC0007F18E /* 3_min_male1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 3_min_male1.mp3; sourceTree = "<group>"; };
@@ -100,6 +117,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		363B1D6A2A2FE37D0041AEDE /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				363B1D702A2FE99C0041AEDE /* GolGolGol.mp3 */,
+				369E48152A21688D0007F18E /* GOAL.mp3 */,
+				363B1D6C2A2FE38C0041AEDE /* AGUEROOO.mp3 */,
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		363B1D6D2A2FE3B50041AEDE /* Crowd */ = {
+			isa = PBXGroup;
+			children = (
+				363B1D7E2A2FFABE0041AEDE /* Booing.mp3 */,
+				369E48382A2A15FD0007F18E /* OleOleOle.mp3 */,
+				363B1D822A30004F0041AEDE /* Victory-chant.mp3 */,
+				369E48142A21688D0007F18E /* Defense-chant.mp3 */,
+			);
+			path = Crowd;
+			sourceTree = "<group>";
+		};
+		363B1D722A2FE9AC0041AEDE /* Commentators */ = {
+			isa = PBXGroup;
+			children = (
+				363B1D732A2FE9BB0041AEDE /* What-a-Save.mp3 */,
+				363B1D752A2FE9CD0041AEDE /* Martin-Tyler1.mp3 */,
+				363B1D772A2FE9FD0041AEDE /* Martin-Tyler2.mp3 */,
+				363B1D792A2FEA0D0041AEDE /* Ankara-Messi.mp3 */,
+			);
+			path = Commentators;
+			sourceTree = "<group>";
+		};
+		363B1D7B2A2FEA270041AEDE /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				363B1D7C2A2FEA330041AEDE /* SIUUU.mp3 */,
+				363B1D802A2FFACD0041AEDE /* Sirens.mp3 */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		36940BC929FC578F006B7B6D = {
 			isa = PBXGroup;
 			children = (
@@ -166,10 +224,10 @@
 		369E48132A2168760007F18E /* SoundEffects */ = {
 			isa = PBXGroup;
 			children = (
-				369E48142A21688D0007F18E /* defense_chant.mp3 */,
-				369E48152A21688D0007F18E /* goal.mp3 */,
-				369E48342A2A15170007F18E /* aguero.mp3 */,
-				369E48382A2A15FD0007F18E /* ole.mp3 */,
+				363B1D7B2A2FEA270041AEDE /* Other */,
+				363B1D722A2FE9AC0041AEDE /* Commentators */,
+				363B1D6D2A2FE3B50041AEDE /* Crowd */,
+				363B1D6A2A2FE37D0041AEDE /* Goal */,
 			);
 			path = SoundEffects;
 			sourceTree = "<group>";
@@ -301,16 +359,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				369E484A2A2A76F80007F18E /* 90_sec_female1.mp3 in Resources */,
+				363B1D762A2FE9CD0041AEDE /* Martin-Tyler1.mp3 in Resources */,
 				369E480B2A202C8E0007F18E /* 30_sec_male1.mp3 in Resources */,
-				369E48172A21688D0007F18E /* goal.mp3 in Resources */,
+				369E48172A21688D0007F18E /* GOAL.mp3 in Resources */,
 				369E48602A2A7AFF0007F18E /* 30_sec_monster.mp3 in Resources */,
+				363B1D7F2A2FFABE0041AEDE /* Booing.mp3 in Resources */,
 				369E48232A2173AF0007F18E /* start.mp3 in Resources */,
 				369E48472A2A76380007F18E /* 90_sec_male1.mp3 in Resources */,
 				36940BDD29FC5791006B7B6D /* Preview Assets.xcassets in Resources */,
 				369E485E2A2A7AE20007F18E /* 90_sec_monster.mp3 in Resources */,
+				363B1D712A2FE99D0041AEDE /* GolGolGol.mp3 in Resources */,
 				369E484E2A2A77660007F18E /* 3_min_female1.mp3 in Resources */,
 				369E481F2A216D370007F18E /* 1.mp3 in Resources */,
-				369E48392A2A15FD0007F18E /* ole.mp3 in Resources */,
+				363B1D782A2FE9FD0041AEDE /* Martin-Tyler2.mp3 in Resources */,
+				363B1D812A2FFACD0041AEDE /* Sirens.mp3 in Resources */,
+				363B1D7D2A2FEA330041AEDE /* SIUUU.mp3 in Resources */,
+				369E48392A2A15FD0007F18E /* OleOleOle.mp3 in Resources */,
 				369E483F2A2A752E0007F18E /* 1_min_male1.mp3 in Resources */,
 				369E484C2A2A77330007F18E /* 30_sec_female1.mp3 in Resources */,
 				369E48452A2A75EC0007F18E /* 3_min_male1.mp3 in Resources */,
@@ -318,14 +382,16 @@
 				369E48122A21685D0007F18E /* final_whistle.mp3 in Resources */,
 				369E481B2A216D000007F18E /* 5.mp3 in Resources */,
 				369E485A2A2A79A40007F18E /* 3_min_monster.mp3 in Resources */,
-				369E48352A2A15170007F18E /* aguero.mp3 in Resources */,
 				369E48522A2A77C70007F18E /* 1_min_female1.mp3 in Resources */,
+				363B1D7A2A2FEA0D0041AEDE /* Ankara-Messi.mp3 in Resources */,
 				369E481D2A216D050007F18E /* 2.mp3 in Resources */,
-				369E48162A21688D0007F18E /* defense_chant.mp3 in Resources */,
+				369E48162A21688D0007F18E /* Defense-chant.mp3 in Resources */,
 				369E48272A2984660007F18E /* empty.mp3 in Resources */,
 				369E48582A2A79960007F18E /* 2_min_monster.mp3 in Resources */,
 				369E485C2A2A7A470007F18E /* 1_min_monster.mp3 in Resources */,
 				36940BDA29FC5791006B7B6D /* Assets.xcassets in Resources */,
+				363B1D742A2FE9BB0041AEDE /* What-a-Save.mp3 in Resources */,
+				363B1D832A30004F0041AEDE /* Victory-chant.mp3 in Resources */,
 				369E48432A2A75BC0007F18E /* 2_min_male1.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
