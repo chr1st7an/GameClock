@@ -9,11 +9,12 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var model : TimerViewModel
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
             ZStack{
                 VStack{
                     Spacer()
-                    Image("STFC_Header").resizable().frame(width: 350,height: 60)
+                    Image(colorScheme == .light ? "STFC_Header_light" : "STFC_HEADER_dark").resizable().frame(width: 350,height: 60)
                     Text("GAME CLOCK").font(.custom(
                         "RobotoRound",
                         fixedSize: 34))

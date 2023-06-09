@@ -10,7 +10,8 @@ import SwiftUI
 struct TimerView: View {
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var model : TimerViewModel
-    
+    @AppStorage("isDarkMode") private var isDarkMode = false
+
     // Session Status
     @GestureState var endSession = false
     @State var gamesLeft : Int = 15
@@ -44,7 +45,7 @@ struct TimerView: View {
                         impact.impactOccurred()
                         model.sessionState = .resumed
                     }label: {
-                        Image(systemName: "play")
+                        Image(systemName: "play").foregroundColor(Color("text"))
                     }
                     .buttonStyle(PlayButtonStyle())
                 case .active, .resumed:
@@ -53,7 +54,7 @@ struct TimerView: View {
                         impact.impactOccurred()
                         model.sessionState = .paused
                     }label: {
-                        Image(systemName: "pause")
+                        Image(systemName: "pause").foregroundColor(Color("text"))
                     }
                     .buttonStyle(PauseButtonStyle())
                 case .ended:
@@ -67,7 +68,7 @@ struct TimerView: View {
                     impact.impactOccurred()
                     model.secondsToGameCompletion -= 10
                 }label: {
-                    Image(systemName: "gobackward.10")
+                    Image(systemName: "gobackward.10").foregroundColor(Color("text"))
                 }
                 .buttonStyle(PlayButtonStyle())
                 .padding(.bottom, 30)
@@ -93,7 +94,7 @@ struct TimerView: View {
                     impact.impactOccurred()
                     model.secondsToGameCompletion += 10
                 }label: {
-                    Image(systemName: "goforward.10")
+                    Image(systemName: "goforward.10").foregroundColor(Color("text"))
                 }
                 .buttonStyle(PlayButtonStyle())
                 .padding(.bottom, 30)
@@ -111,14 +112,14 @@ struct TimerView: View {
                 if model.buffering {
                     Text("game starts in").foregroundColor(.black)
                     Text("\(secondsToBufferCompletion) seconds ")
-                        .font(.largeTitle).foregroundColor(.black).shadow(radius: 0.5)
+                        .font(.largeTitle).foregroundColor(Color("text"))
                 }else{
                     Text(model.secondsToGameCompletion.asTimestamp)
-                        .font(.largeTitle).foregroundColor(.black).shadow(radius: 0.5)
+                        .font(.largeTitle).foregroundColor(Color("text"))
                 }
                 HStack {
-                    Image(systemName: "soccerball").foregroundColor(.black)
-                    Text("\(gamesLeft) games ").foregroundColor(.black)
+                    Image(systemName: "soccerball").foregroundColor(Color("text"))
+                    Text("\(gamesLeft) games ").foregroundColor(Color("text"))
                 }
             }
         }
@@ -156,10 +157,10 @@ struct TimerView: View {
                     timerControls
                     Spacer()
                     Text(model.secondsToSessionCompletion.asTimestamp)
-                        .font(.title).foregroundColor(.black).shadow(radius: 0.5)
+                        .font(.title).foregroundColor(Color("text")).shadow(radius: 0.5)
                     ProgressView(value: (1 - model.sessionProgress), total: 1) {
                     }.progressViewStyle(.linear).frame(width: proxy.size.width * 0.75).tint(STFCpink)
-                    Text("session until \(model.completionDate, format: .dateTime.hour().minute())").foregroundColor(.black)
+                    Text("session until \(model.completionDate, format: .dateTime.hour().minute())").foregroundColor(Color("text"))
                 }
                 .padding(.vertical)
                 .foregroundColor(.white).onChange(of: model.secondsToSessionCompletion) { timeLeft in
@@ -171,7 +172,7 @@ struct TimerView: View {
                             showRules = true
                         } label: {
                             Image(systemName: "gamecontroller")
-                        }.foregroundColor(.black)
+                        }.foregroundColor(Color("iconButton"))
                         ZStack {
                             RoundedRectangle(cornerRadius: 35).foregroundColor(.red.opacity(0.9)).frame(width: proxy.size.width * 0.3, height: proxy.size.height * 0.04)
                             Text("END SESSION").font(.custom(
@@ -203,13 +204,13 @@ struct TimerView: View {
                         Button {
                             showSounds = true
                         } label: {
-                            Image(systemName: "waveform")
+                            Image(systemName: "waveform").foregroundColor(Color("iconButton"))
                         }.foregroundColor(.black)
                         Button {
                             showSettings = true
                         } label: {
-                            Image(systemName: "gearshape.fill")
-                        }.foregroundColor(.black)
+                            Image(systemName: "gearshape.fill").foregroundColor(.gray)
+                        }
                     }
                 }
             }
@@ -258,26 +259,44 @@ struct TimerView: View {
                         Text("Receive game captaining tips")
                     }.animation(.default, value: testToggle)
                 }
+                Section {
+                    Toggle("Dark Mode", isOn: $isDarkMode)
+                } header: {
+                    Text("Color Scheme")
+                }
+
 
                 Section(header: Text("Session")) {
                     Stepper(value: $bufferLengthInSeconds, in: 5...30) {
                         Text("\(bufferLengthInSeconds) seconds between games")
                     }
                 }
-                Section(header: Text("Audio")) {
- 
-                        Picker("Voice", selection: $model.voiceSelection) {
-                                Text("Male 1").tag("male1")
-                                Text("Female 1").tag("female1")
-                                Text("Monster").tag("monster")
-                            }
-                        Picker("Announcement Frequency", selection: $model.frequencySelection) {
-                                Text("Low").tag("low")
-                                Text("Medium").tag("medium")
-                                Text("High").tag("high")
-                            }
+                Section {
+                    Picker("Voice", selection: $model.voiceSelection) {
+                            Text("Male 1").tag("male1")
+                            Text("Female 1").tag("female1")
+                            Text("Monster").tag("monster")
+                        }
+                    Picker("Announcement Frequency", selection: $model.frequencySelection) {
+                            Text("Low").tag("low")
+                            Text("Medium").tag("medium")
+                            Text("High").tag("high")
+                        }
+                } header: {
+                    Text("Audio")
+                } footer: {
+                    VStack(alignment: .leading) {
+                        Text("Low: 90 sec, 30 sec")
+                        Text("Medium: 2 min, 1 min, 30 sec")
+                        Text("High: 3 min, 2 min, 90 sec, 1 min, 30 sec")
+                    }.fontWeight(.light)
                 }
-                Button("Restore Settings") {}
+
+                Button("Restore Settings") {
+                    model.voiceSelection = "male1"
+                    model.frequencySelection = "medium"
+                    bufferLengthInSeconds = 15
+                }
             }
             .navigationBarTitle(Text("Settings"))
         }

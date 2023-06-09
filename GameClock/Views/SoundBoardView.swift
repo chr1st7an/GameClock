@@ -83,10 +83,10 @@ struct soundButton: View {
         }
     }
 }
-let goalSounds = ["GOAL", "AGUEROOO", "GolGolGol"]
+let goalSounds = ["GOAL", "SIUUU", "GolGolGol"]
 let crowdSounds = ["Defense-chant", "OleOleOle", "Booing", "Victory-chant"]
 let commentarySounds = ["Martin-Tyler1", "Martin-Tyler2", "Ankara-Messi", "What-a-Save"]
-let otherSounds = ["SIUUU", "Sirens"]
+let otherSounds = ["Sirens"]
 
 struct SoundBoardView_Previews: PreviewProvider {
     static var previews: some View {

@@ -48,9 +48,9 @@ struct ruleSection: View{
                     } label: {
                         Text(toggleVal ? "hide" : "show").foregroundColor(STFCpink)
                     }
-                }.padding(.horizontal, 25)
+                }.padding(.horizontal, 25).padding(.top)
                 Divider().padding(.horizontal)
-            }
+            }.padding(.bottom, -20)
             if toggleVal{
                 ForEach(values: ruleSet) { rule in
                     ruleCard(rule: rule).padding(.vertical)
@@ -134,7 +134,7 @@ let numbers = [
 
 ]
 let gameCaptainTips = [
-"Start the session off by bringing players in reminding them of rules/vibe, welcome new players, congratulate players on milestones",
+"Start the session off by bringing players in to welcome new members, remind them of rules, and congratulate players on milestones",
 "When playing remember to keep an ear out for times, and be the first player to come off if needed"
 ]
 

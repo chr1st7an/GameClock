@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct GameClockApp: App {
+    @AppStorage("isDarkMode") private var isDarkMode = false
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().preferredColorScheme(isDarkMode ? .dark : .light)
         }
     }
 }

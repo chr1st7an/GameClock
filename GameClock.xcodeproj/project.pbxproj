@@ -55,7 +55,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		363B1D6C2A2FE38C0041AEDE /* AGUEROOO.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = AGUEROOO.mp3; path = ../../../../../AGUEROOO.mp3; sourceTree = "<group>"; };
+		363B1D6C2A2FE38C0041AEDE /* AGUERO.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = AGUERO.mp3; path = ../../../../../AGUERO.mp3; sourceTree = "<group>"; };
 		363B1D702A2FE99C0041AEDE /* GolGolGol.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = GolGolGol.mp3; sourceTree = "<group>"; };
 		363B1D732A2FE9BB0041AEDE /* What-a-Save.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "What-a-Save.mp3"; sourceTree = "<group>"; };
 		363B1D752A2FE9CD0041AEDE /* Martin-Tyler1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Martin-Tyler1.mp3"; sourceTree = "<group>"; };
@@ -122,7 +122,8 @@
 			children = (
 				363B1D702A2FE99C0041AEDE /* GolGolGol.mp3 */,
 				369E48152A21688D0007F18E /* GOAL.mp3 */,
-				363B1D6C2A2FE38C0041AEDE /* AGUEROOO.mp3 */,
+				363B1D7C2A2FEA330041AEDE /* SIUUU.mp3 */,
+				363B1D6C2A2FE38C0041AEDE /* AGUERO.mp3 */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -152,7 +153,6 @@
 		363B1D7B2A2FEA270041AEDE /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				363B1D7C2A2FEA330041AEDE /* SIUUU.mp3 */,
 				363B1D802A2FFACD0041AEDE /* Sirens.mp3 */,
 			);
 			path = Other;
