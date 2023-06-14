@@ -10,7 +10,12 @@ import SwiftUI
 struct TimerView: View {
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var model : TimerViewModel
+    
+    // USER SETTINGS
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("isAutoReplay") private var isAutoReplay = false
+    @AppStorage("replayDelay") private var bufferLengthInSeconds = 15
+    @State var notifications : Bool = false
 
     // Session Status
     @GestureState var endSession = false
@@ -27,78 +32,94 @@ struct TimerView: View {
     @State var timeElapsed: Int = 3
     @State var loop : Timer.TimerPublisher = Timer.publish(every: 1, on: .main, in: .common)
     
-    // User Config
-    @State var bufferLengthInSeconds : Int = 15
-    @State var notifications = false
-    
     // Buffer Config
     @State var secondsToBufferCompletion: Int = 15
     @State var buffer : Timer.TimerPublisher = Timer.publish(every: 1, on: .main, in: .common)
     
     var timerControls: some View {
-        VStack{
-            HStack(spacing: 25) {
-                switch model.sessionState {
-                case .paused:
+        ZStack{
+            VStack{
+                HStack(spacing: 25) {
+                    switch model.sessionState {
+                    case .paused:
+                        Button{
+                            let impact = UIImpactFeedbackGenerator(style: .medium)
+                            impact.impactOccurred()
+                            model.sessionState = .resumed
+                        }label: {
+                            Image(systemName: "play").foregroundColor(Color("text"))
+                        }
+                        .buttonStyle(PlayButtonStyle())
+                    case .active, .resumed:
+                        Button {
+                            let impact = UIImpactFeedbackGenerator(style: .medium)
+                            impact.impactOccurred()
+                            model.sessionState = .paused
+                        }label: {
+                            Image(systemName: "pause").foregroundColor(Color("text"))
+                        }
+                        .buttonStyle(PauseButtonStyle())
+                    case .ended:
+                        HStack{
+                        }
+                    }
+                }
+                HStack(spacing:25){
                     Button{
                         let impact = UIImpactFeedbackGenerator(style: .medium)
                         impact.impactOccurred()
-                        model.sessionState = .resumed
+                        model.secondsToGameCompletion -= 10
                     }label: {
-                        Image(systemName: "play").foregroundColor(Color("text"))
+                        Image(systemName: "gobackward.10").foregroundColor(Color("text"))
                     }
                     .buttonStyle(PlayButtonStyle())
-                case .active, .resumed:
+                    .padding(.bottom, 30)
                     Button {
+                        showRestartAlert = true
+                    } label: {
+                        Image(systemName: "soccerball").resizable().frame(width: 35, height: 35)
+                    }.buttonStyle(EndSessionButtonStyle())
+                        .alert(isPresented:$showRestartAlert) {
+                            Alert(
+                                title: Text("Killer Goal"),
+                                message: Text("Volley? Header? First Goal? New game."),
+                                primaryButton: .destructive(Text("Goal")) {
+                                    let impact = UIImpactFeedbackGenerator(style: .medium)
+                                    impact.impactOccurred()
+                                    model.secondsToGameCompletion = 240
+                                    model.gameProgress = 0
+                                    withAnimation {
+                                        model.buffering = true
+                                    }
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
+                    Button{
                         let impact = UIImpactFeedbackGenerator(style: .medium)
                         impact.impactOccurred()
-                        model.sessionState = .paused
+                        model.secondsToGameCompletion += 10
                     }label: {
-                        Image(systemName: "pause").foregroundColor(Color("text"))
+                        Image(systemName: "goforward.10").foregroundColor(Color("text"))
                     }
-                    .buttonStyle(PauseButtonStyle())
-                case .ended:
-                    HStack{
-                    }
+                    .buttonStyle(PlayButtonStyle())
+                    .padding(.bottom, 30)
                 }
-            }
-            HStack(spacing:25){
-                Button{
-                    let impact = UIImpactFeedbackGenerator(style: .medium)
-                    impact.impactOccurred()
-                    model.secondsToGameCompletion -= 10
-                }label: {
-                    Image(systemName: "gobackward.10").foregroundColor(Color("text"))
+            }.opacity(model.buffering ? 0 : 1)
+            Button {
+                let impact = UIImpactFeedbackGenerator(style: .medium)
+                impact.impactOccurred()
+                secondsToBufferCompletion = 0
+                withAnimation {
+                    model.buffering = false
                 }
-                .buttonStyle(PlayButtonStyle())
-                .padding(.bottom, 30)
-                Button {
-                    showRestartAlert = true
-                } label: {
-                    Image(systemName: "soccerball").resizable().frame(width: 35, height: 35)
-                }.buttonStyle(EndSessionButtonStyle())
-                    .alert(isPresented:$showRestartAlert) {
-                        Alert(
-                            title: Text("Killer Goal"),
-                            message: Text("Volley? Header? First Goal? New game."),
-                            primaryButton: .destructive(Text("Goal")) {
-                                let impact = UIImpactFeedbackGenerator(style: .medium)
-                                impact.impactOccurred()
-                                model.secondsToGameCompletion = 240
-                            },
-                            secondaryButton: .cancel()
-                        )
-                    }
-                Button{
-                    let impact = UIImpactFeedbackGenerator(style: .medium)
-                    impact.impactOccurred()
-                    model.secondsToGameCompletion += 10
-                }label: {
-                    Image(systemName: "goforward.10").foregroundColor(Color("text"))
-                }
-                .buttonStyle(PlayButtonStyle())
-                .padding(.bottom, 30)
-            }
+            } label: {
+                Text("start game").overlay(
+                    RoundedRectangle(cornerRadius: 25)
+                        .stroke(Color("iconButton")
+                            .opacity(0.4), lineWidth: 2).frame(width: 200, height: 50)
+                ).foregroundColor(Color("iconButton"))
+            }.opacity(model.buffering ? 1 : 0)
         }
         
     }
@@ -110,7 +131,7 @@ struct TimerView: View {
             }
             VStack{
                 if model.buffering {
-                    Text("game starts in").foregroundColor(.black)
+                    Text("game starts in").foregroundColor(Color("text"))
                     Text("\(secondsToBufferCompletion) seconds ")
                         .font(.largeTitle).foregroundColor(Color("text"))
                 }else{
@@ -194,6 +215,8 @@ struct TimerView: View {
                                     timeElapsed = 3
                                     loop = Timer.publish(every: 1, on: .main, in: .common)
                                     withAnimation {
+                                        model.inGame = false
+                                        model.buffering = true
                                         model.loopState = .ended
                                         model.sessionState = .ended
                                     }
@@ -215,6 +238,8 @@ struct TimerView: View {
                 }
             }
             .onAppear {
+                buffer.connect()
+                secondsToBufferCompletion = bufferLengthInSeconds
                 model.audio.playAudio(soundName: "start")
             }
         }.sheet(isPresented: $showSettings) {

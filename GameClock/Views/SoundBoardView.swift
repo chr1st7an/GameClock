@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct SoundBoardView: View {
+//    private var favSounds: [String] = ["SIUUU"]
     @EnvironmentObject var model : TimerViewModel
+//    @State var showingFavorites = true
     @State var showingGoal = true
     @State var showingCrowd = true
     @State var showingCommentary = true
@@ -17,6 +19,7 @@ struct SoundBoardView: View {
         NavigationView {
             VStack(spacing: 20) {
                 ScrollView(.vertical){
+//                    soundPanel(toggleVal: $showingFavorites, header: "Favorites", soundSet: favSounds, iconName: "star")
                     soundPanel(toggleVal: $showingGoal, header: "Goal", soundSet: goalSounds, iconName: "soccerball")
                     soundPanel(toggleVal: $showingCommentary, header: "Commentary", soundSet: commentarySounds, iconName: "music.mic")
                     soundPanel(toggleVal: $showingCrowd, header: "Crowd", soundSet: crowdSounds, iconName: "sportscourt.fill")

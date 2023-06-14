@@ -9,8 +9,16 @@ import SwiftUI
 
 class TimerViewModel: ObservableObject {
     @Published var audio: AudioManager = AudioManager()
-    @Published var voiceSelection = "male1"
-    @Published var frequencySelection = "medium"
+    @Published var voiceSelection = "male1" {
+        didSet {
+            UserDefaults.standard.set(voiceSelection, forKey: "voiceSelection")
+        }
+    }
+    @Published var frequencySelection = "medium" {
+        didSet {
+            UserDefaults.standard.set(frequencySelection, forKey: "frequencySelection")
+        }
+    }
     // SESSION TIMER CONFIG
     private var sessionTimer = Timer()
     var sessionLengthSeconds = 3600
@@ -48,7 +56,10 @@ class TimerViewModel: ObservableObject {
     @Published var completionDate = Date.now
     var updateTimer: Timer?
 
-
+    init() {
+        self.voiceSelection = UserDefaults.standard.string(forKey: "voiceSelection") ?? "male1"
+        self.frequencySelection = UserDefaults.standard.string(forKey: "frequencySelection") ?? "medium"
+    }
     enum TimerState {
         case active
         case paused
@@ -170,19 +181,22 @@ class TimerViewModel: ObservableObject {
             if self.secondsToSessionCompletion < 0 {
                 self.sessionState = .ended
             }
-            self.secondsToGameCompletion -= 1
             withAnimation {
                 self.gameProgress = Float(self.secondsToGameCompletion) / Float(self.gameLengthSeconds)
             }
             print("\(self.secondsToGameCompletion) seconds left")
-            if frequencySelection == "low"{
-                handleGameUpdatesLow()
-            }
-            if frequencySelection == "medium"{
-                handleGameUpdatesMedium()
-            }
-            if frequencySelection == "high"{
-                handleGameUpdatesHigh()
+            
+            if !buffering {
+                self.secondsToGameCompletion -= 1
+                if frequencySelection == "low"{
+                    handleGameUpdatesLow()
+                }
+                if frequencySelection == "medium"{
+                    handleGameUpdatesMedium()
+                }
+                if frequencySelection == "high"{
+                    handleGameUpdatesHigh()
+                }
             }
             sendCaptainNotification()
         })
@@ -196,7 +210,7 @@ class TimerViewModel: ObservableObject {
             print("30 second warning")
             self.audio.playAudio(soundName: "30_sec_\(voiceSelection)")
         }
-        if self.secondsToGameCompletion == 0 {
+        if self.secondsToGameCompletion <= 0 {
             self.gameProgress = 0
             self.buffering = true
             self.audio.playAudio(soundName: "final_whistle")
@@ -216,7 +230,7 @@ class TimerViewModel: ObservableObject {
             print("30 second warning")
             self.audio.playAudio(soundName: "30_sec_\(voiceSelection)")
         }
-        if self.secondsToGameCompletion == 0 {
+        if self.secondsToGameCompletion <= 0 {
             self.gameProgress = 0
             self.buffering = true
             self.audio.playAudio(soundName: "final_whistle")
@@ -244,7 +258,7 @@ class TimerViewModel: ObservableObject {
             print("30 second warning")
             self.audio.playAudio(soundName: "30_sec_\(voiceSelection)")
         }
-        if self.secondsToGameCompletion == 0 {
+        if self.secondsToGameCompletion <= 0 {
             self.gameProgress = 0
             self.buffering = true
             self.audio.playAudio(soundName: "final_whistle")

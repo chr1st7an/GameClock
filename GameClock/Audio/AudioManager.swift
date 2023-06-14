@@ -41,6 +41,13 @@ class AudioManager: NSObject, ObservableObject, AVAudioPlayerDelegate {
     }
 
     func playAudio(soundName: String) {
+        try! AVAudioSession.sharedInstance().setCategory(
+            AVAudioSession.Category.playback,
+            mode: AVAudioSession.Mode.default,
+            options: [
+                AVAudioSession.CategoryOptions.duckOthers
+            ]
+        )
         try! AVAudioSession.sharedInstance().setActive(true)
         let path = Bundle.main.path(forResource: soundName, ofType:"mp3")
         let url = URL(fileURLWithPath: path ?? "empty.mp3")

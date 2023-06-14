@@ -14,10 +14,10 @@ struct HomeView: View {
             ZStack{
                 VStack{
                     Spacer()
-                    Image(colorScheme == .light ? "STFC_Header_light" : "STFC_HEADER_dark").resizable().frame(width: 350,height: 60)
+//                    Image(colorScheme == .light ? "STFC_Header_light" : "STFC_HEADER_dark").resizable().frame(width: 350,height: 60)
                     Text("GAME CLOCK").font(.custom(
                         "RobotoRound",
-                        fixedSize: 34))
+                        fixedSize: 44))
                     Spacer()
                     Button {
                         let impact = UIImpactFeedbackGenerator(style: .heavy)
@@ -29,6 +29,7 @@ struct HomeView: View {
                         withAnimation{
                             model.sessionState = .active
                             model.loopState = .active
+                            model.buffering = true
                         }
                     } label: {
                         Image(systemName: "sportscourt").resizable().frame(width: 150, height: 90).foregroundColor(STFCpink).shadow(radius: 0.5)
