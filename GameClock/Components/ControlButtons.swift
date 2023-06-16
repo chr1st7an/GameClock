@@ -37,6 +37,21 @@ struct SoundButtonStyle2: ButtonStyle {
             )
     }
 }
+struct PlusEdit: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(width: 80, height: 80)
+            .foregroundColor(.black)
+            .background(.white)
+            .clipShape(Circle())
+            .padding(.all, 3)
+            .overlay(
+                Circle()
+                    .stroke(Color(.black)
+                        .opacity(0.4), lineWidth: 2)
+            )
+    }
+}
 struct SoundButtonStyle3: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

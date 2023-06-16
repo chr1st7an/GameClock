@@ -32,9 +32,6 @@ struct TimerView: View {
     @State var timeElapsed: Int = 3
     @State var loop : Timer.TimerPublisher = Timer.publish(every: 1, on: .main, in: .common)
     
-    // Buffer Config
-    @State var secondsToBufferCompletion: Int = 15
-    @State var buffer : Timer.TimerPublisher = Timer.publish(every: 1, on: .main, in: .common)
     
     var timerControls: some View {
         ZStack{
@@ -86,11 +83,12 @@ struct TimerView: View {
                                 primaryButton: .destructive(Text("Goal")) {
                                     let impact = UIImpactFeedbackGenerator(style: .medium)
                                     impact.impactOccurred()
-                                    model.secondsToGameCompletion = 240
+//                                    model.secondsToGameCompletion = 240
                                     model.gameProgress = 0
                                     withAnimation {
                                         model.buffering = true
                                     }
+                                    
                                 },
                                 secondaryButton: .cancel()
                             )
@@ -109,10 +107,7 @@ struct TimerView: View {
             Button {
                 let impact = UIImpactFeedbackGenerator(style: .medium)
                 impact.impactOccurred()
-                secondsToBufferCompletion = 0
-                withAnimation {
-                    model.buffering = false
-                }
+                model.secondsToBufferCompletion = 1
             } label: {
                 Text("start game").overlay(
                     RoundedRectangle(cornerRadius: 25)
@@ -132,7 +127,7 @@ struct TimerView: View {
             VStack{
                 if model.buffering {
                     Text("game starts in").foregroundColor(Color("text"))
-                    Text("\(secondsToBufferCompletion) seconds ")
+                    Text("\(model.secondsToBufferCompletion) seconds ")
                         .font(.largeTitle).foregroundColor(Color("text"))
                 }else{
                     Text(model.secondsToGameCompletion.asTimestamp)
@@ -162,10 +157,10 @@ struct TimerView: View {
                                 }
                             }
                         }
-                        .onReceive(buffer) { tick in
-                            secondsToBufferCompletion -= 1
-                            print("\(secondsToBufferCompletion) to next game")
-                            if secondsToBufferCompletion <= 0 {
+                        .onReceive(model.buffer) { tick in
+                            model.secondsToBufferCompletion -= 1
+                            print("\(model.secondsToBufferCompletion) to next game")
+                            if model.secondsToBufferCompletion < 1 {
                                 withAnimation {
                                     model.secondsToGameCompletion = 240
                                     model.buffering = false
@@ -238,9 +233,9 @@ struct TimerView: View {
                 }
             }
             .onAppear {
-                buffer.connect()
-                secondsToBufferCompletion = bufferLengthInSeconds
-                model.audio.playAudio(soundName: "start")
+                model.buffer.connect()
+                model.secondsToBufferCompletion = bufferLengthInSeconds
+//                model.audio.playAudio(soundName: "start")
             }
         }.sheet(isPresented: $showSettings) {
             settingsView()
@@ -262,14 +257,14 @@ struct TimerView: View {
                 loop = Timer.publish(every: 1, on: .main, in: .common)
             }
         }
-        .onChange(of: model.buffering){ paused in
-            if paused {
-                buffer.connect()
-                secondsToBufferCompletion = bufferLengthInSeconds
+        .onChange(of: model.buffering){ buffering in
+            if buffering {
+                model.buffer.connect()
+                model.secondsToBufferCompletion = bufferLengthInSeconds
             }else{
-                buffer.connect().cancel()
-                secondsToBufferCompletion = bufferLengthInSeconds
-                buffer = Timer.publish(every: 1, on: .main, in: .common)
+                model.buffer.connect().cancel()
+                model.secondsToBufferCompletion = bufferLengthInSeconds
+                model.buffer = Timer.publish(every: 1, on: .main, in: .common)
             }
         }
         

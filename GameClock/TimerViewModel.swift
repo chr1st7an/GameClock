@@ -47,9 +47,10 @@ class TimerViewModel: ObservableObject {
     
     // BUFFER TIMER CONFIG
     @Published var buffering : Bool = false
-    @Published var secondsToBufferCompletion = 0
+    @Published var secondsToBufferCompletion = 15
     @Published var bufferSecondsElapsed = 0
     @Published var bufferProgress: Float = 0.0
+    @Published var buffer : Timer.TimerPublisher = Timer.publish(every: 1, on: .main, in: .common)
     
     
     @Published var totalsecondsElapsed: Int = 0
@@ -214,7 +215,6 @@ class TimerViewModel: ObservableObject {
             self.gameProgress = 0
             self.buffering = true
             self.audio.playAudio(soundName: "final_whistle")
-
         }
     }
     func handleGameUpdatesMedium(){
