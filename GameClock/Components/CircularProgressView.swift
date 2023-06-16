@@ -18,7 +18,6 @@ struct CircularProgressView: View {
                 .opacity(0.3)
                 .foregroundColor(.gray)
 
-             // Orange circle
             Circle()
                 .trim(from: 0.0, to: CGFloat(min(progress, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: 8.0,
@@ -32,6 +31,7 @@ struct CircularProgressView: View {
         .animation(.linear(duration: 1.0), value: progress)
     }
 }
+
 
 //struct CircularProgressView_Previews: PreviewProvider {
 //    @State var prog : Float = 1.5

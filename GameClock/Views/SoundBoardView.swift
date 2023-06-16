@@ -114,20 +114,28 @@ struct soundButton: View {
             Button {
                 let impact = UIImpactFeedbackGenerator(style: .medium)
                 impact.impactOccurred()
-                if editingFavorites && favoriteSounds.contains(soundName) {
-                    let temp = favoriteSounds.filter { $0 != soundName }
-                    favoriteSounds = temp
-                }
-                if editingFavorites && !(favoriteSounds.contains(soundName)){
-                    favoriteSounds.append(soundName)
+                if editingFavorites{
+                    if favoriteSounds.contains(soundName) {
+                        withAnimation {
+                            favoriteSounds = favoriteSounds.filter { $0 != soundName }
+                        }
+                    }else{
+                        withAnimation{
+                            favoriteSounds.append(soundName)
+                        }
+                    }
                 }else{
                     model.audio.playAudio(soundName: soundName)
                 }
             }label: {
-                if favoriteSounds.contains(soundName) && editingFavorites {
-                    Image(systemName:"minus")
+                if editingFavorites{
+                    if favoriteSounds.contains(soundName) {
+                        Image(systemName:"minus")
+                    }else{
+                        Image(systemName:"plus")
+                    }
                 }else{
-                    Image(systemName: editingFavorites && !(favoriteSounds.contains(soundName)) ? "plus" : "waveform.circle")}
+                    Image(systemName: "waveform.circle")}
             }
             .buttonStyle(SoundButtonStyle1())
             .padding(.horizontal).padding(.top)

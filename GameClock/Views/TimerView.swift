@@ -27,6 +27,7 @@ struct TimerView: View {
     @State var showRules = false
     @State var testToggle = false
     @State var showRestartAlert = false
+    @State var showEndAlert = false
     
     // Loop Config
     @State var timeElapsed: Int = 3
@@ -195,16 +196,17 @@ struct TimerView: View {
                                 "RobotoRound",
                                 fixedSize: 12)).foregroundColor(.white)
                         }
-                        .padding(.vertical)
-                        .scaleEffect(endSession ? 1.2 : 1)
-                        .animation(.spring(response: 0.4, dampingFraction: 0.6))
-                        .gesture(
-                            LongPressGesture(minimumDuration: 1)
-                                .updating($endSession) { currentState, gestureState, transaction in
-                                    gestureState = currentState
-                                }
-                                .onEnded { value in
-                                    let impact = UIImpactFeedbackGenerator(style: .heavy)
+                        .onTapGesture {
+                            let impact = UIImpactFeedbackGenerator(style: .heavy)
+                            impact.impactOccurred()
+                            showEndAlert = true
+                            
+                        }.alert(isPresented:$showEndAlert) {
+                            Alert(
+                                title: Text("Confirm"),
+                                message: Text("end the session"),
+                                primaryButton: .destructive(Text("End")) {
+                                    let impact = UIImpactFeedbackGenerator(style: .medium)
                                     impact.impactOccurred()
                                     model.looping = false
                                     timeElapsed = 3
@@ -215,8 +217,12 @@ struct TimerView: View {
                                         model.loopState = .ended
                                         model.sessionState = .ended
                                     }
-                                }
-                        )
+                                    
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
+                        .padding(.vertical)
                     }
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button {
