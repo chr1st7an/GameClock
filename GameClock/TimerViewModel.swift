@@ -21,7 +21,11 @@ class TimerViewModel: ObservableObject {
     }
     // SESSION TIMER CONFIG
     private var sessionTimer = Timer()
-    var sessionLengthSeconds = 3600
+    var sessionLengthSeconds = 3600 {
+        didSet {
+            UserDefaults.standard.set(sessionLengthSeconds, forKey: "sessionLengthSeconds")
+        }
+    }
     @Published var secondsToSessionCompletion = 0
     @Published var sessionProgress: Float = 0.0
     @Published var sessionSecondsElapsed = 0
