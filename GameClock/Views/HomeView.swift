@@ -12,6 +12,7 @@ struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
     // USER SETTINGS
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("gameMinutes") private var gameMinutes = 4
     @AppStorage("isAutoReplay") private var isAutoReplay = false
     @AppStorage("countdown") private var countdown = false
     @AppStorage("replayDelay") private var bufferLengthInSeconds = 15
@@ -34,6 +35,7 @@ struct HomeView: View {
                     VStack{
                         Button {
                             let impact = UIImpactFeedbackGenerator(style: .heavy)
+                            model.gameLengthSeconds = gameMinutes * 60
                             impact.impactOccurred()
                             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
                                 print(success ? "Authorization success" : "Authorization failed")
@@ -77,6 +79,9 @@ struct HomeView: View {
                                     Stepper(value: $bufferLengthInSeconds, in: 5...30) {
                                         Text("\(bufferLengthInSeconds) seconds between games")
                                     }
+                                    Stepper(value: $gameMinutes, in: 1...10) {
+                                        Text("\(gameMinutes) minute games")
+                                    }
                                     Picker("Voice", selection: $model.voiceSelection) {
                                             Text("Male 1").tag("male1")
                                             Text("Female 1").tag("female1")
@@ -88,6 +93,9 @@ struct HomeView: View {
                                             Text("High").tag("high")
                                         }
                                     Toggle("10 second countdown", isOn: $countdown)
+                                    Toggle(isOn: $model.tips) {
+                                        Text("Receive game captaining tips")
+                                    }
                                 } header: {
                                     Text("Session Settings")
                                 }

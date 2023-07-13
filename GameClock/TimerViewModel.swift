@@ -19,6 +19,11 @@ class TimerViewModel: ObservableObject {
             UserDefaults.standard.set(frequencySelection, forKey: "frequencySelection")
         }
     }
+    var tips = false {
+        didSet {
+            UserDefaults.standard.set(tips, forKey: "captainTips")
+        }
+    }
     // SESSION TIMER CONFIG
     private var sessionTimer = Timer()
     var sessionLengthSeconds = 3600 {
@@ -44,6 +49,7 @@ class TimerViewModel: ObservableObject {
 
     // GAME TIMER CONFIG
     var gameLengthSeconds = 240
+    
     @Published var inGame : Bool = false
     @Published var secondsToGameCompletion = 240
     @Published var gameSecondsElapsed = 0
@@ -64,6 +70,9 @@ class TimerViewModel: ObservableObject {
     init() {
         self.voiceSelection = UserDefaults.standard.string(forKey: "voiceSelection") ?? "male1"
         self.frequencySelection = UserDefaults.standard.string(forKey: "frequencySelection") ?? "medium"
+        self.tips = UserDefaults.standard.bool(forKey: "captainTips") ?? false
+        self.sessionLengthSeconds = UserDefaults.standard.integer(forKey: "sessionLengthSeconds") ?? 3600
+        self.secondsToSessionCompletion = self.sessionLengthSeconds
     }
     enum TimerState {
         case active
@@ -89,7 +98,7 @@ class TimerViewModel: ObservableObject {
                 sessionTimer = Timer()
                 secondsToSessionCompletion = sessionLengthSeconds
                 sessionProgress = 0
-                secondsToGameCompletion = 240
+                secondsToGameCompletion = gameLengthSeconds
 
             case .active:
                 // Starts the timer and sets all progress properties
@@ -156,6 +165,7 @@ class TimerViewModel: ObservableObject {
             self.secondsToLoopCompletion -= 1
             self.loopSecondsElapsed += 1
             if self.secondsToLoopCompletion < 0 {
+                // TODO : check to see if removing audio destroys background loop. this is the source of the announcement interuption somehow
                 self.audio.playSilentAudio(soundName: "empty")
                 withAnimation {
                     self.loopState = .ended
@@ -203,7 +213,9 @@ class TimerViewModel: ObservableObject {
                     handleGameUpdatesHigh()
                 }
             }
-            sendCaptainNotification()
+            if tips {
+                sendCaptainNotification()
+            }
         })
     }
     func handleGameUpdatesLow(){
@@ -318,6 +330,11 @@ class TimerViewModel: ObservableObject {
     func sendCaptainNotification(){
         let content = UNMutableNotificationContent()
          
+        if self.secondsToSessionCompletion == Int(Double(self.sessionLengthSeconds) * 0.75) {
+            content.title = "How's the game? 👀"
+            content.body = "make sure all teams are balanced in skill level!"
+            content.sound = UNNotificationSound.default
+        }
         if self.secondsToSessionCompletion == 1800 {
             content.title = "Halfway there! ⏳"
             content.body = "make sure all players are checked in!"
@@ -343,12 +360,19 @@ class TimerViewModel: ObservableObject {
     }
 }
 extension Int {
-    var asTimestamp: String {
-        let hour = self / 3600
+    var asShortTimestamp: String {
+
         let minute = self / 60 % 60
         let second = self % 60
 
         return String(format: "%02i:%02i", minute, second)
+    }
+    var asLongTimestamp: String {
+        let hour = self / 3600
+        let minute = self / 60 % 60
+        let second = self % 60
+
+        return String(format: "%02i:%02i:%02i",hour, minute, second)
     }
 }
 

@@ -52,6 +52,7 @@
 		369E485C2A2A7A470007F18E /* 1_min_monster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E485B2A2A7A470007F18E /* 1_min_monster.mp3 */; };
 		369E485E2A2A7AE20007F18E /* 90_sec_monster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E485D2A2A7AE20007F18E /* 90_sec_monster.mp3 */; };
 		369E48602A2A7AFF0007F18E /* 30_sec_monster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E485F2A2A7AFF0007F18E /* 30_sec_monster.mp3 */; };
+		36D4B2442A60A723003EA2F4 /* beep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 36D4B2432A60A723003EA2F4 /* beep.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +105,7 @@
 		369E485B2A2A7A470007F18E /* 1_min_monster.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 1_min_monster.mp3; sourceTree = "<group>"; };
 		369E485D2A2A7AE20007F18E /* 90_sec_monster.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 90_sec_monster.mp3; sourceTree = "<group>"; };
 		369E485F2A2A7AFF0007F18E /* 30_sec_monster.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 30_sec_monster.mp3; sourceTree = "<group>"; };
+		36D4B2432A60A723003EA2F4 /* beep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = beep.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +226,7 @@
 		369E48132A2168760007F18E /* SoundEffects */ = {
 			isa = PBXGroup;
 			children = (
+				36D4B2432A60A723003EA2F4 /* beep.mp3 */,
 				363B1D7B2A2FEA270041AEDE /* Other */,
 				363B1D722A2FE9AC0041AEDE /* Commentators */,
 				363B1D6D2A2FE3B50041AEDE /* Crowd */,
@@ -360,6 +363,7 @@
 			files = (
 				369E484A2A2A76F80007F18E /* 90_sec_female1.mp3 in Resources */,
 				363B1D762A2FE9CD0041AEDE /* Martin-Tyler1.mp3 in Resources */,
+				36D4B2442A60A723003EA2F4 /* beep.mp3 in Resources */,
 				369E480B2A202C8E0007F18E /* 30_sec_male1.mp3 in Resources */,
 				369E48172A21688D0007F18E /* GOAL.mp3 in Resources */,
 				369E48602A2A7AFF0007F18E /* 30_sec_monster.mp3 in Resources */,
@@ -559,7 +563,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.STFC.GameClock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -597,7 +601,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.STFC.GameClock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
