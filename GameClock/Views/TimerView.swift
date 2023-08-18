@@ -104,6 +104,17 @@ struct TimerView: View {
                     .buttonStyle(PlayButtonStyle())
                     .padding(.bottom, 30)
                 }
+                Button {
+                    // text to speach voice announcement
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 35).foregroundColor(Color("iconButton").opacity(0.9)).frame(width: 150, height: 30)
+                        Text("announce time left").font(.custom(
+                            "RobotoRound",
+                            fixedSize: 12)).foregroundColor(Color("secondaryText"))
+                    }
+                }
+
             }.opacity(model.buffering ? 0 : 1)
             Button {
                 let impact = UIImpactFeedbackGenerator(style: .medium)
@@ -172,7 +183,7 @@ struct TimerView: View {
                     
                     
                     timerControls
-                    Spacer()
+//                    Spacer()
                     Text(model.secondsToSessionCompletion.asTimestamp)
                         .font(.title).foregroundColor(Color("text")).shadow(radius: 0.5)
                     ProgressView(value: (1 - model.sessionProgress), total: 1) {
