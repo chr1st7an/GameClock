@@ -10,11 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var model : TimerViewModel
     @Environment(\.colorScheme) var colorScheme
-    // USER SETTINGS
     @AppStorage("isDarkMode") private var isDarkMode = false
-    @AppStorage("isAutoReplay") private var isAutoReplay = false
-    @AppStorage("countdown") private var countdown = false
-    @AppStorage("replayDelay") private var bufferLengthInSeconds = 15
     @State var notifications : Bool = false
     @State var showQuickSettings : Bool = false
 
@@ -74,8 +70,18 @@ struct HomeView: View {
                                             Text("1.5 hours").tag(5400)
                                             Text("2 hours").tag(7200)
                                         }
-                                    Stepper(value: $bufferLengthInSeconds, in: 5...30) {
-                                        Text("\(bufferLengthInSeconds) seconds between games")
+                                    Picker("Game Length (minutes)", selection: $model.gameLengthSeconds) {
+                                            Text("3").tag(180)
+                                            Text("4").tag(240)
+                                            Text("5").tag(300)
+                                            Text("6").tag(360)
+                                            Text("7").tag(420)
+                                            Text("8").tag(480)
+                                            Text("9").tag(540)
+                                            Text("10").tag(600)
+                                        }
+                                    Stepper(value: $model.bufferLengthSeconds, in: 5...30) {
+                                        Text("\(model.bufferLengthSeconds) seconds between games")
                                     }
                                     Picker("Voice", selection: $model.voiceSelection) {
                                             Text("Male 1").tag("male1")
@@ -87,21 +93,29 @@ struct HomeView: View {
                                             Text("Medium").tag("medium")
                                             Text("High").tag("high")
                                         }
-                                    Toggle("10 second countdown", isOn: $countdown)
+                                    Toggle("10 second countdown", isOn: $model.countdown)
+                                    Toggle(isOn: $model.tips) {
+                                            Text("Receive game captaining tips")
+                                        }
                                 } header: {
                                     Text("Session Settings")
                                 }
-    //                        footer: {
-    //                                VStack(alignment: .leading) {
-    //                                    Text("Low: 90 sec, 30 sec")
-    //                                    Text("Medium: 2 min, 1 min, 30 sec")
-    //                                    Text("High: 3 min, 2 min, 90 sec, 1 min, 30 sec")
-    //                                }.fontWeight(.light)
-    //                            }
                             }
                         }
                     }
                     Spacer()
+                }
+                .onAppear {
+                    if model.sessionLengthSeconds == 0 {
+                        model.sessionLengthSeconds = 3600
+                    }
+                    if model.gameLengthSeconds == 0 {
+                        model.gameLengthSeconds = 240
+                    }
+                    if model.bufferLengthSeconds == 0 {
+                        model.bufferLengthSeconds = 15
+                    }
+
                 }
             
     }

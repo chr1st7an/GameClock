@@ -8,6 +8,7 @@
 import SwiftUI
 
 class TimerViewModel: ObservableObject {
+    // AUDIO CONFIG
     @Published var audio: AudioManager = AudioManager()
     @Published var voiceSelection = "male1" {
         didSet {
@@ -19,16 +20,52 @@ class TimerViewModel: ObservableObject {
             UserDefaults.standard.set(frequencySelection, forKey: "frequencySelection")
         }
     }
-    // SESSION TIMER CONFIG
-    private var sessionTimer = Timer()
-    var sessionLengthSeconds = 3600 {
+    @Published var countdown = false {
+        didSet {
+            UserDefaults.standard.set(countdown, forKey: "countdown")
+        }
+    }
+    
+    // USER CONFIG
+    @Published var sessionLengthSeconds = 3600 {
         didSet {
             UserDefaults.standard.set(sessionLengthSeconds, forKey: "sessionLengthSeconds")
         }
     }
+    @Published var gameLengthSeconds = 240 {
+        didSet {
+            UserDefaults.standard.set(gameLengthSeconds, forKey: "gameLengthSeconds")
+        }
+    }
+    @Published var bufferLengthSeconds = 15 {
+        didSet {
+            UserDefaults.standard.set(bufferLengthSeconds, forKey: "bufferLengthSeconds")
+        }
+    }
+    @Published var tips = false {
+            didSet {
+                UserDefaults.standard.set(tips, forKey: "captainTips")
+            }
+        }
+    
+    // SESSION TIMER CONFIG
+    private var sessionTimer = Timer()
     @Published var secondsToSessionCompletion = 0
     @Published var sessionProgress: Float = 0.0
     @Published var sessionSecondsElapsed = 0
+    
+    // GAME TIMER
+    @Published var inGame : Bool = false
+    @Published var secondsToGameCompletion = 240
+    @Published var gameSecondsElapsed = 0
+    @Published var gameProgress: Float = 0.0
+    
+    // BUFFER TIMER CONFIG
+    @Published var buffering : Bool = false
+    @Published var secondsToBufferCompletion = 15
+    @Published var bufferSecondsElapsed = 0
+    @Published var bufferProgress: Float = 0.0
+    @Published var buffer : Timer.TimerPublisher = Timer.publish(every: 1, on: .main, in: .common)
     
     // INFINITE BACKGROUND LOOP CONFIG
     private var loopTimer = Timer()
@@ -42,21 +79,7 @@ class TimerViewModel: ObservableObject {
     @Published var secondsLeftInGame : Int = 0
     @Published var continueFrom : Int = 0
 
-    // GAME TIMER CONFIG
-    var gameLengthSeconds = 240
-    @Published var inGame : Bool = false
-    @Published var secondsToGameCompletion = 240
-    @Published var gameSecondsElapsed = 0
-    @Published var gameProgress: Float = 0.0
-    
-    // BUFFER TIMER CONFIG
-    @Published var buffering : Bool = false
-    @Published var secondsToBufferCompletion = 15
-    @Published var bufferSecondsElapsed = 0
-    @Published var bufferProgress: Float = 0.0
-    @Published var buffer : Timer.TimerPublisher = Timer.publish(every: 1, on: .main, in: .common)
-    
-    
+    // OTHER
     @Published var totalsecondsElapsed: Int = 0
     @Published var completionDate = Date.now
     var updateTimer: Timer?
@@ -64,6 +87,14 @@ class TimerViewModel: ObservableObject {
     init() {
         self.voiceSelection = UserDefaults.standard.string(forKey: "voiceSelection") ?? "male1"
         self.frequencySelection = UserDefaults.standard.string(forKey: "frequencySelection") ?? "medium"
+        self.tips = UserDefaults.standard.bool(forKey: "captainTips")
+        self.countdown = UserDefaults.standard.bool(forKey: "countdown")
+        self.sessionLengthSeconds = UserDefaults.standard.integer(forKey: "sessionLengthSeconds")
+        self.secondsToSessionCompletion = self.sessionLengthSeconds
+        self.gameLengthSeconds = UserDefaults.standard.integer(forKey: "gameLengthSeconds")
+        self.secondsToGameCompletion = self.gameLengthSeconds
+        self.bufferLengthSeconds = UserDefaults.standard.integer(forKey: "bufferLengthSeconds")
+        self.secondsToBufferCompletion = self.bufferLengthSeconds
     }
     enum TimerState {
         case active
@@ -89,7 +120,7 @@ class TimerViewModel: ObservableObject {
                 sessionTimer = Timer()
                 secondsToSessionCompletion = sessionLengthSeconds
                 sessionProgress = 0
-                secondsToGameCompletion = 240
+                secondsToGameCompletion = gameLengthSeconds
 
             case .active:
                 // Starts the timer and sets all progress properties
@@ -156,6 +187,7 @@ class TimerViewModel: ObservableObject {
             self.secondsToLoopCompletion -= 1
             self.loopSecondsElapsed += 1
             if self.secondsToLoopCompletion < 0 {
+                // this is what causes dumb ass muting during timer announcements
                 self.audio.playSilentAudio(soundName: "empty")
                 withAnimation {
                     self.loopState = .ended
@@ -174,6 +206,7 @@ class TimerViewModel: ObservableObject {
             }
         })
     }
+    
     private func startSession() {
         sessionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [weak self] _ in
             guard let self else { return }
@@ -203,9 +236,12 @@ class TimerViewModel: ObservableObject {
                     handleGameUpdatesHigh()
                 }
             }
-            sendCaptainNotification()
+            if tips {
+                sendCaptainNotification()
+            }
         })
     }
+    
     func handleGameUpdatesLow(){
         if self.secondsToGameCompletion == 90 {
             print("90 second warning")
@@ -276,7 +312,6 @@ class TimerViewModel: ObservableObject {
         endBackgroundTaskIfActive()
       }
     }
-    
     func registerBackgroundTask() {
         print("Registering background task")
       backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
@@ -284,7 +319,6 @@ class TimerViewModel: ObservableObject {
         self?.endBackgroundTaskIfActive()
       }
     }
-
     func endBackgroundTaskIfActive() {
       let isBackgroundTaskActive = backgroundTask != .invalid
       if isBackgroundTaskActive {
@@ -293,7 +327,6 @@ class TimerViewModel: ObservableObject {
         backgroundTask = .invalid
       }
     }
-
     func onChangeOfScenePhase(_ newPhase: ScenePhase) {
       switch newPhase {
       case .background:
@@ -314,16 +347,20 @@ class TimerViewModel: ObservableObject {
         break
       }
     }
-    
     func sendCaptainNotification(){
         let content = UNMutableNotificationContent()
          
-        if self.secondsToSessionCompletion == 1800 {
+        if self.secondsToSessionCompletion == Int(Double(self.sessionLengthSeconds) * 0.75) {
+            content.title = "How's the game? 👀"
+            content.body = "make sure all teams are balanced in skill level!"
+            content.sound = UNNotificationSound.default
+        }
+        if self.secondsToSessionCompletion == Int(Double(self.sessionLengthSeconds) * 0.50) {
             content.title = "Halfway there! ⏳"
             content.body = "make sure all players are checked in!"
             content.sound = UNNotificationSound.default
         }
-        if self.secondsToSessionCompletion == 600 {
+        if self.secondsToSessionCompletion == Int(Double(self.sessionLengthSeconds) * 0.20) {
             content.title = "Have another session? ⚽️"
             content.body = "players should be rolling in."
             content.sound = UNNotificationSound.default
@@ -336,19 +373,24 @@ class TimerViewModel: ObservableObject {
         // add our notification request
         UNUserNotificationCenter.current().add(request)
     }
-    
-
     private func updateCompletionDate() {
         completionDate = Date.now.addingTimeInterval(Double(secondsToSessionCompletion))
     }
 }
 extension Int {
-    var asTimestamp: String {
-        let hour = self / 3600
+    var asShortTimestamp: String {
+
         let minute = self / 60 % 60
         let second = self % 60
 
         return String(format: "%02i:%02i", minute, second)
+    }
+    var asLongTimestamp: String {
+        let hour = self / 3600
+        let minute = self / 60 % 60
+        let second = self % 60
+
+        return String(format: "%02i:%02i:%02i",hour, minute, second)
     }
 }
 
