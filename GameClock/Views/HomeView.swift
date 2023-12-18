@@ -47,7 +47,6 @@ struct HomeView: View {
                             "RobotoRound",
                             fixedSize: 15)).padding(.top)
                     }
-                    
                     Spacer()
                     // Settings
                     VStack{

@@ -69,7 +69,7 @@ class TimerViewModel: ObservableObject {
     
     // INFINITE BACKGROUND LOOP CONFIG
     private var loopTimer = Timer()
-    var loopLengthSeconds = 10
+    var loopLengthSeconds = 20
     @Published var secondsToLoopCompletion = 0
     @Published var loopSecondsElapsed = 0
     @Published var looping : Bool = false
@@ -234,6 +234,10 @@ class TimerViewModel: ObservableObject {
                 }
                 if frequencySelection == "high"{
                     handleGameUpdatesHigh()
+                }
+                if self.secondsToGameCompletion == 9 && self.countdown {
+                    print("10 second countdown")
+                    self.audio.playAudio(soundName: "10_countdown")
                 }
             }
             if tips {

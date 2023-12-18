@@ -15,14 +15,14 @@ struct SoundBoardView: View {
     
     @State var editingFavorites = false
     @State var showingFavorites = true
-    @State var showingGoal = true
-    @State var showingCrowd = true
-    @State var showingCommentary = true
-    @State var showingOther = true
+    @State var showingGoal = false
+    @State var showingCrowd = false
+    @State var showingCommentary = false
+    @State var showingOther = false
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
+            VStack {
                 ScrollView(.vertical){
                     soundPanel(editingFavorites: $editingFavorites, toggleVal: $showingFavorites, favoriteSounds: $favoriteSounds, header: "Favorites", soundSet: favoriteSounds, iconName: "star")
                     soundPanel(editingFavorites: $editingFavorites, toggleVal: $showingGoal, favoriteSounds: $favoriteSounds, header: "Goal", soundSet: goalSounds, iconName: "soccerball")
@@ -56,11 +56,11 @@ struct soundPanel: View{
     var soundSet : [String]
     var iconName: String
     var body: some View{
-        VStack(spacing: 20){
+        VStack{
             HStack{
                 Text(header).font(.custom(
                     "RobotoRound",
-                    fixedSize: 28))
+                    fixedSize: 22))
                 Image(systemName: iconName)
                 Spacer()
                 Button {
@@ -145,10 +145,10 @@ struct soundButton: View {
         }
     }
 }
-let goalSounds = ["GOAL", "SIUUU", "GolGolGol"]
-let crowdSounds = ["Defense-chant", "OleOleOle", "Booing", "Victory-chant"]
-let commentarySounds = ["Martin-Tyler1", "Martin-Tyler2", "Ankara-Messi", "What-a-Save"]
-let otherSounds = ["Sirens"]
+let goalSounds = ["stadium-goal","GOAL", "SIUUU", "GolGolGol", "aguero"]
+let crowdSounds = ["champions-league","Defense-chant", "OleOleOle", "Booing", "Victory-chant"]
+let commentarySounds = ["absolutely_breathtaking","oh-yes_martin-tyler", "Ankara-Messi", "astonishing","What-a-Save", "ray_hudson_dream"]
+let otherSounds = ["i-am-jose-mourinho","airhorn", "downer_noise", "bobo", "anime-wow", "zlatan", "lebron-james-of-soccer"]
 
 struct SoundBoardView_Previews: PreviewProvider {
     static var previews: some View {
