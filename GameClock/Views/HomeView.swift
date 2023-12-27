@@ -2,70 +2,79 @@
 //  HomeView.swift
 //  GameClock
 //
-//  Created by Christian Rodriguez on 4/28/23.
+//  Created by Christian Rodriguez on 12/26/23.
 //
 
 import SwiftUI
 
 struct HomeView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @AppStorage("isDarkMode") private var isDarkMode = false
-    
-    @EnvironmentObject var model : TimerViewModel
-    
-    var body: some View {
-                VStack(spacing: 20){
-                    Spacer()
-                    // Title
-                    VStack{
-                        Image(colorScheme == .light ? "STFC_Header_light" : "STFC_HEADER_dark").resizable().frame(width: 350,height: 60)
-                        Text("GAME CLOCK").font(.custom(
-                            "RobotoRound",
-                            fixedSize: 44))
-                    }
-                    
-                    Spacer()
-                    // Start
-                    VStack{
-                        Button {
-                            let impact = UIImpactFeedbackGenerator(style: .heavy)
-                            impact.impactOccurred()
-                            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                                print(success ? "Authorization success" : "Authorization failed")
-                                print(error?.localizedDescription ?? "")
-                            }
-                            withAnimation{
-                                model.sessionState = .active
-                                model.loopState = .active
-                                model.buffering = true
-                            }
-                        } label: {
-                            Image(systemName: "sportscourt").resizable().frame(width: 150, height: 90).foregroundColor(STFCpink).shadow(radius: 0.5)
-                        }
-                        Text("tap to start session").font(.custom(
-                            "RobotoRound",
-                            fixedSize: 15)).padding(.top)
-                    }
-                    Spacer()
-                }
-                .onAppear {
-                    if model.sessionLengthSeconds == 0 {
-                        model.sessionLengthSeconds = 3600
-                    }
-                    if model.gameLengthSeconds == 0 {
-                        model.gameLengthSeconds = 240
-                    }
-                    if model.bufferLengthSeconds == 0 {
-                        model.bufferLengthSeconds = 15
-                    }
+    @EnvironmentObject var sessionModel : SessionViewModel
+    @State var showSettings = false
 
-                }
+    var body: some View {
+        ZStack{
+            ColorPalette.secondaryBackground.ignoresSafeArea()
+            VStack(spacing:100){
+                Spacer()
+                TitleBanner()
+                Spacer()
+                StartButton()
+                UserAgreement()
+            }
+        }.sheet(isPresented: $showSettings, content: {
             
+        })
     }
+    @ViewBuilder
+    func TitleBanner() -> some View {
+        VStack(spacing:10){
+            Text("Game Clock").font(Font.custom("Orbitron-Regular", size: 50)).foregroundStyle(ColorPalette.primaryText)
+            Image("LightIcon").resizable().frame(width: 75, height: 95)
+        }
+    }
+        
+    @ViewBuilder
+    func StartButton() -> some View {
+        VStack(spacing:15){
+            Button{
+                withAnimation {
+                    sessionModel.sessionState = .active
+                }
+            }label: {
+                Rectangle().stroke(lineWidth: 5).frame(width: .infinity, height: 50).foregroundStyle(ColorPalette.primaryText).overlay {
+                        Text("Start Session").font(Font.custom("Play-Bold", size: 23)).foregroundStyle(ColorPalette.primaryText)
+                }.background(ColorPalette.primaryBackground.opacity(0.8))
+                    .padding(.horizontal, 85)
+            }
+            SettingsButton()
+        }
+    }
+    @ViewBuilder
+    func UserAgreement() -> some View {
+        HStack{
+            Image(systemName: "info.circle").resizable().frame(width: 22, height: 22).foregroundStyle(ColorPalette.secondaryText)
+            Text("By starting a session you are agreeing to receiving notifications over the course of the session length that emit audio announcements.").font(Font.custom("Play-Regular", size: 10)).foregroundStyle(ColorPalette.secondaryText)            }.padding()
+
+    }
+    
+    @ViewBuilder
+    func SettingsButton() -> some View {
+        Button{
+            withAnimation {
+                showSettings = true
+            }
+        }label: {
+            HStack{
+                Image(systemName: "gear").resizable().frame(width: 25, height: 25)
+                Text("Settings").font(Font.custom("Play-Regular", size: 20))
+            }.foregroundStyle(ColorPalette.secondaryForeground)
+        }
+    }
+    
+    
+    
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-    }
+#Preview {
+    HomeView().environmentObject(SessionViewModel())
 }

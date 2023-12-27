@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var model = TimerViewModel()
+    @StateObject private var sessionModel = SessionViewModel()
+    
     var body: some View {
             ZStack{
-                if model.sessionState == .ended {
+                
+                if sessionModel.sessionState == .ended {
                     HomeView()
                 }else{
-                    TimerView()
+                    SessionView()
                 }
             }
-            .environmentObject(model)
+            .environmentObject(sessionModel)
     }
 }
 struct ContentView_Previews: PreviewProvider {
