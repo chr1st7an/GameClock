@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var sessionModel : SessionViewModel
+    @EnvironmentObject var settings : SettingsViewModel
     @State var showSettings = false
 
     var body: some View {
@@ -22,7 +23,7 @@ struct HomeView: View {
                 UserAgreement()
             }
         }.sheet(isPresented: $showSettings, content: {
-            
+            SettingsSheet()
         })
     }
     @ViewBuilder
@@ -38,7 +39,7 @@ struct HomeView: View {
         VStack(spacing:15){
             Button{
                 withAnimation {
-                    sessionModel.sessionState = .active
+                    sessionModel.sessionState = .start(SessionConfig(sessionLength: settings.sessionLength, gameLength: settings.gameLength, transitionLength: settings.transitionLength))
                 }
             }label: {
                 Rectangle().stroke(lineWidth: 5).frame(width: .infinity, height: 50).foregroundStyle(ColorPalette.primaryText).overlay {
@@ -71,10 +72,34 @@ struct HomeView: View {
         }
     }
     
+    @ViewBuilder
+    func SettingsSheet() -> some View {
+        Form{
+            Section {
+                Picker("Session Length", selection: $settings.sessionLength) {
+                    Text("1 hour").tag(3600)
+                    Text("1.5 hours").tag(5400)
+                    Text("2 hours").tag(7200)
+                }
+                Picker("Game Length", selection: $settings.gameLength) {
+                    Text("3 minutes").tag(180)
+                    Text("4 minutes").tag(240)
+                    Text("5 minutes").tag(300)
+                    Text("6 minutes").tag(360)
+                }
+                Stepper(value: $settings.transitionLength, in: 5...30) {
+                    Text("\(settings.transitionLength) seconds between games")
+                }
+            } header: {
+                Text("Settings")
+            }
+        }
+    }
+    
     
     
 }
 
 #Preview {
-    HomeView().environmentObject(SessionViewModel())
+    HomeView().environmentObject(SessionViewModel()).environmentObject(SettingsViewModel())
 }

@@ -7,27 +7,30 @@
 import Foundation
 import SwiftUI
 
-struct CircularProgressView: View {
+struct RectangularProgressView: View {
     @Binding var progress: Float
 
     var body: some View {
         ZStack {
             // Gray circle
-            Circle()
+            Rectangle()
                 .stroke(lineWidth: 8.0)
                 .foregroundColor(.gray)
+                .frame(width: .infinity, height: .infinity)
 
-            Circle()
+            Rectangle()
                 .trim(from: 0.0, to: CGFloat(min(progress, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: 8.0,
                     lineCap: .round, lineJoin: .round))
                 .foregroundColor(ColorPalette.primaryForeground)
                 // Ensures the animation starts from 12 o'clock
-                .rotationEffect(Angle(degrees: 270))
+//                .rotationEffect(Angle(degrees: 270))
+                .frame(width: .infinity, height: .infinity)
         }
         // The progress animation will animate over 1 second which
         // allows for a continuous smooth update of the ProgressView
         .animation(.linear(duration: 1.0), value: progress)
+        
     }
 }
 
@@ -38,3 +41,4 @@ struct CircularProgressView: View {
 //        CircularProgressView(progress: $prog)
 //    }
 //}
+

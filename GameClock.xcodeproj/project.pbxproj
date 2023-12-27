@@ -44,13 +44,14 @@
 		369E485C2A2A7A470007F18E /* 1_min_monster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E485B2A2A7A470007F18E /* 1_min_monster.mp3 */; };
 		369E485E2A2A7AE20007F18E /* 90_sec_monster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E485D2A2A7AE20007F18E /* 90_sec_monster.mp3 */; };
 		369E48602A2A7AFF0007F18E /* 30_sec_monster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 369E485F2A2A7AFF0007F18E /* 30_sec_monster.mp3 */; };
-		36D472682B30DA7500552068 /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D472672B30DA7500552068 /* Routes.swift */; };
 		36DF507F2B3BD7DC00EE1BDA /* SessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DF507E2B3BD7DC00EE1BDA /* SessionViewModel.swift */; };
 		36DF50812B3BD9CA00EE1BDA /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DF50802B3BD9CA00EE1BDA /* SessionView.swift */; };
 		36DF50832B3BD9D400EE1BDA /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DF50822B3BD9D400EE1BDA /* HomeView.swift */; };
 		36DF50862B3BDF3200EE1BDA /* Play-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 36DF50852B3BDF2600EE1BDA /* Play-Regular.ttf */; };
 		36DF50872B3BDF3400EE1BDA /* Play-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 36DF50842B3BDF2600EE1BDA /* Play-Bold.ttf */; };
 		36DF50892B3BDFC800EE1BDA /* Orbitron-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 36DF50882B3BDFC800EE1BDA /* Orbitron-Regular.ttf */; };
+		36DF508C2B3C952A00EE1BDA /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DF508B2B3C952A00EE1BDA /* SettingsViewModel.swift */; };
+		36DF508E2B3CA53D00EE1BDA /* RectangularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DF508D2B3CA53D00EE1BDA /* RectangularProgressView.swift */; };
 		36F541C82AAFDD3F00EB3CE0 /* countdown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 36F541C72AAFDD3F00EB3CE0 /* countdown.mp3 */; };
 		36F541CA2AAFE0B600EB3CE0 /* 10_countdown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 36F541C92AAFE0B600EB3CE0 /* 10_countdown.mp3 */; };
 		36F541CC2AAFF5E000EB3CE0 /* ray_hudson_dream.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 36F541CB2AAFF5E000EB3CE0 /* ray_hudson_dream.mp3 */; };
@@ -110,13 +111,14 @@
 		369E485B2A2A7A470007F18E /* 1_min_monster.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 1_min_monster.mp3; sourceTree = "<group>"; };
 		369E485D2A2A7AE20007F18E /* 90_sec_monster.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 90_sec_monster.mp3; sourceTree = "<group>"; };
 		369E485F2A2A7AFF0007F18E /* 30_sec_monster.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 30_sec_monster.mp3; sourceTree = "<group>"; };
-		36D472672B30DA7500552068 /* Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		36DF507E2B3BD7DC00EE1BDA /* SessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewModel.swift; sourceTree = "<group>"; };
 		36DF50802B3BD9CA00EE1BDA /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
 		36DF50822B3BD9D400EE1BDA /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		36DF50842B3BDF2600EE1BDA /* Play-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Play-Bold.ttf"; sourceTree = "<group>"; };
 		36DF50852B3BDF2600EE1BDA /* Play-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Play-Regular.ttf"; sourceTree = "<group>"; };
 		36DF50882B3BDFC800EE1BDA /* Orbitron-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Orbitron-Regular.ttf"; sourceTree = "<group>"; };
+		36DF508B2B3C952A00EE1BDA /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		36DF508D2B3CA53D00EE1BDA /* RectangularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularProgressView.swift; sourceTree = "<group>"; };
 		36F541C72AAFDD3F00EB3CE0 /* countdown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = countdown.mp3; sourceTree = "<group>"; };
 		36F541C92AAFE0B600EB3CE0 /* 10_countdown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 10_countdown.mp3; sourceTree = "<group>"; };
 		36F541CB2AAFF5E000EB3CE0 /* ray_hudson_dream.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ray_hudson_dream.mp3; sourceTree = "<group>"; };
@@ -219,9 +221,9 @@
 				369E480C2A202E130007F18E /* GameClock.entitlements */,
 				36940BF129FCD56A006B7B6D /* Info.plist */,
 				36940BD529FC578F006B7B6D /* GameClockApp.swift */,
-				36D472672B30DA7500552068 /* Routes.swift */,
 				36940BD729FC578F006B7B6D /* ContentView.swift */,
 				36DF507E2B3BD7DC00EE1BDA /* SessionViewModel.swift */,
+				36DF508B2B3C952A00EE1BDA /* SettingsViewModel.swift */,
 				369E482D2A2A00540007F18E /* Views */,
 				369E48062A202C4E0007F18E /* Audio */,
 				369E482C2A2A00400007F18E /* Components */,
@@ -292,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				36940BE329FC589B006B7B6D /* CircularProgressView.swift */,
+				36DF508D2B3CA53D00EE1BDA /* RectangularProgressView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -470,11 +473,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36D472682B30DA7500552068 /* Routes.swift in Sources */,
 				36940BD829FC578F006B7B6D /* ContentView.swift in Sources */,
+				36DF508E2B3CA53D00EE1BDA /* RectangularProgressView.swift in Sources */,
 				36DF50832B3BD9D400EE1BDA /* HomeView.swift in Sources */,
 				36940BE429FC589B006B7B6D /* CircularProgressView.swift in Sources */,
 				36DF507F2B3BD7DC00EE1BDA /* SessionViewModel.swift in Sources */,
+				36DF508C2B3C952A00EE1BDA /* SettingsViewModel.swift in Sources */,
 				369E48052A20274F0007F18E /* AudioManager.swift in Sources */,
 				360193492A912305007F4982 /* AudioSynth.swift in Sources */,
 				36DF50812B3BD9CA00EE1BDA /* SessionView.swift in Sources */,

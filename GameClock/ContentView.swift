@@ -9,17 +9,17 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var sessionModel = SessionViewModel()
-    
+    @StateObject private var settings = SettingsViewModel()
+
     var body: some View {
             ZStack{
-                
                 if sessionModel.sessionState == .ended {
                     HomeView()
                 }else{
                     SessionView()
                 }
             }
-            .environmentObject(sessionModel)
+            .environmentObject(sessionModel).environmentObject(settings)
     }
 }
 struct ContentView_Previews: PreviewProvider {
