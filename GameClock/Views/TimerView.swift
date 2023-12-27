@@ -14,7 +14,6 @@ struct TimerView: View {
     
     // UI SETTINGS
     @AppStorage("isDarkMode") private var isDarkMode = false
-//    @AppStorage("isAutoReplay") private var isAutoReplay = false
 
     // Session Status
     @GestureState var endSession = false

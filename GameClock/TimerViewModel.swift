@@ -37,7 +37,7 @@ class TimerViewModel: ObservableObject {
             UserDefaults.standard.set(gameLengthSeconds, forKey: "gameLengthSeconds")
         }
     }
-    @Published var bufferLengthSeconds = 15 {
+    @Published var transitionLengthSeconds = 15 {
         didSet {
             UserDefaults.standard.set(bufferLengthSeconds, forKey: "bufferLengthSeconds")
         }
