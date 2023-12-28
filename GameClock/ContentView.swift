@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct ContentView: View {
     @StateObject private var sessionModel = SessionViewModel()
@@ -14,7 +15,11 @@ struct ContentView: View {
     var body: some View {
             ZStack{
                 if sessionModel.sessionState == .ended {
-                    HomeView()
+                    HomeView().onAppear{
+                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .providesAppNotificationSettings, .provisional, .sound]) { (_,_) in
+                                
+                        }
+                    }
                 }else{
                     SessionView()
                 }

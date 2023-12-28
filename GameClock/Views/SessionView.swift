@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SessionView: View {
+    @Environment(\.scenePhase) var scenePhase
+
     @State var selectedTab : SessionTab = .timer
     @EnvironmentObject var sessionModel : SessionViewModel
     var body: some View {
@@ -24,6 +26,9 @@ struct SessionView: View {
                     Button{
                         withAnimation{
                             sessionModel.sessionState = .ended
+                            sessionModel.gameState = .paused
+                            sessionModel.endGame()
+                            sessionModel.transitionState = .pause
                         }
                     }label: {
                         Rectangle().stroke(lineWidth: 1.5).frame(width: 150, height: 40).foregroundStyle(.foreground).overlay {
@@ -47,6 +52,15 @@ struct SessionView: View {
                 }
             }
         }
+        .onChange(of: scenePhase) { newPhase in
+                        if newPhase == .inactive {
+                            print("Inactive")
+                        } else if newPhase == .active {
+                            print("Active")
+                        } else if newPhase == .background {
+                            print("Background")
+                        }
+                    }
     }
     
     @ViewBuilder
@@ -70,7 +84,9 @@ struct SessionView: View {
                 Rectangle().frame(width: .infinity, height: 75).foregroundStyle(ColorPalette.primaryBackground).shadow(color: ColorPalette.secondaryText, radius: 8, x: 0, y: 5)
                 HStack(spacing:5){
                     Button{
-                        
+                        withAnimation {
+                            sessionModel.gameSecondsRemaining -= 10
+                        }
                     }label: {
                         Rectangle().stroke(ColorPalette.primaryText, lineWidth: 5).overlay {
                             Text("-10").font(Font.custom("Play-Bold", size: 30)).foregroundStyle(.red)
@@ -101,7 +117,9 @@ struct SessionView: View {
                         
                     }
                     Button{
-                        
+                        withAnimation {
+                            sessionModel.gameSecondsRemaining += 10
+                        }
                     }label: {
                         Rectangle().stroke(ColorPalette.primaryText, lineWidth: 5).overlay {
                             Text("+10").font(Font.custom("Play-Bold", size: 30)).foregroundStyle(ColorPalette.secondaryBackground)

@@ -40,6 +40,7 @@ struct HomeView: View {
             Button{
                 withAnimation {
                     sessionModel.sessionState = .start(SessionConfig(sessionLength: settings.sessionLength, gameLength: settings.gameLength, transitionLength: settings.transitionLength))
+                    sessionModel.gameState = .start
                 }
             }label: {
                 Rectangle().stroke(lineWidth: 5).frame(width: .infinity, height: 50).foregroundStyle(ColorPalette.primaryText).overlay {

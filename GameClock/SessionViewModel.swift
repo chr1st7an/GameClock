@@ -26,7 +26,6 @@ class SessionViewModel: ObservableObject {
             case .start(let config):
                 self.config = config
                 setUpSession()
-                self.gameState = .start
             case .active:
                 startSession()
             case .paused:
@@ -83,6 +82,7 @@ class SessionViewModel: ObservableObject {
                 gameTimer.invalidate()
             case .ended:
                 endGame()
+                gameState = .restarting
             case .restarting:
                 transitionState = .start
             }
@@ -112,10 +112,9 @@ class SessionViewModel: ObservableObject {
         })
     }
     
-    private func endGame() {
+    func endGame() {
         gameTimer.invalidate()
         gameTimer = Timer()
-        gameState = .restarting
     }
     
     // TRANSITION
@@ -132,6 +131,9 @@ class SessionViewModel: ObservableObject {
             case .active:
                 startTransition()
             case .ended:
+                endTransition()
+                gameState = .start
+            case .pause:
                 endTransition()
             }
         }
@@ -160,10 +162,9 @@ class SessionViewModel: ObservableObject {
         })
     }
     
-    private func endTransition() {
+    func endTransition() {
         transitionTimer.invalidate()
         transitionTimer = Timer()
-        gameState = .start
     }
     
 }
@@ -187,4 +188,5 @@ enum TransitionState {
     case start
     case active
     case ended
+    case pause
 }

@@ -18,20 +18,23 @@ struct SessionConfig: Codable, Hashable {
 
 class SettingsViewModel: ObservableObject {
     // timer settings in seconds
-    @Published var sessionLength = 3600 {
-            didSet {
-                UserDefaults.standard.set(sessionLength, forKey: "sessionLength")
-            }
-        }
-    @Published var gameLength = 10 {
-            didSet {
-                UserDefaults.standard.set(gameLength, forKey: "gameLength")
-            }
-        }
-    @Published var transitionLength = 2 {
-            didSet {
-                UserDefaults.standard.set(transitionLength, forKey: "transitionLength")
-            }
-        }
+    @AppStorage("sessionLength") var sessionLength = 3600 
+//    {
+//            didSet {
+//                UserDefaults.standard.set(sessionLength, forKey: "sessionLength")
+//            }
+//        }
+    @AppStorage("gameLength") var gameLength = 10 
+//    {
+//            didSet {
+//                UserDefaults.standard.set(gameLength, forKey: "gameLength")
+//            }
+//        }
+    @AppStorage("transitionLength") var transitionLength = 2 
+//    {
+//            didSet {
+//                UserDefaults.standard.set(transitionLength, forKey: "transitionLength")
+//            }
+//        }
 }
 
