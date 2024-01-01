@@ -9,11 +9,22 @@ import SwiftUI
 
 @main
 struct GameClockApp: App {
-    @AppStorage("isDarkMode") private var isDarkMode = false
+//    @AppStorage("isDarkMode") private var isDarkMode = false
+    init(){
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .providesAppNotificationSettings, .provisional, .sound]) { success, error in
+            if success {
+                print("All set!")
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+    }
     
     var body: some Scene {
         WindowGroup {
-            ContentView().preferredColorScheme(isDarkMode ? .dark : .light)
+            ContentView()
+//                .preferredColorScheme(isDarkMode ? .dark : .light)
         }
     }
 }
@@ -37,3 +48,4 @@ extension Int {
         return String(format: "%02i:%02i", minute, second)
     }
 }
+

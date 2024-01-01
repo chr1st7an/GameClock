@@ -30,7 +30,7 @@ struct HomeView: View {
     func TitleBanner() -> some View {
         VStack(spacing:10){
             Text("Game Clock").font(Font.custom("Orbitron-Regular", size: 50)).foregroundStyle(ColorPalette.primaryText)
-            Image("LightIcon").resizable().frame(width: 75, height: 95)
+            Image("LightIcon").resizable().frame(width: 80, height: 95)
         }
     }
         
@@ -38,8 +38,12 @@ struct HomeView: View {
     func StartButton() -> some View {
         VStack(spacing:15){
             Button{
+                let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+                impactFeedbackGenerator.prepare()
+                impactFeedbackGenerator.impactOccurred()
+                let config = SessionConfig(sessionLength: settings.sessionLength, gameLength: settings.gameLength, transitionLength: settings.transitionLength)
                 withAnimation {
-                    sessionModel.sessionState = .start(SessionConfig(sessionLength: settings.sessionLength, gameLength: settings.gameLength, transitionLength: settings.transitionLength))
+                    sessionModel.sessionState = .start(config)
                     sessionModel.gameState = .start
                 }
             }label: {
@@ -78,6 +82,7 @@ struct HomeView: View {
         Form{
             Section {
                 Picker("Session Length", selection: $settings.sessionLength) {
+                    Text("Test - 20 minutes").tag(1200)
                     Text("1 hour").tag(3600)
                     Text("1.5 hours").tag(5400)
                     Text("2 hours").tag(7200)
@@ -87,9 +92,13 @@ struct HomeView: View {
                     Text("4 minutes").tag(240)
                     Text("5 minutes").tag(300)
                     Text("6 minutes").tag(360)
+                    Text("Test - 15 seconds").tag(15)
                 }
                 Stepper(value: $settings.transitionLength, in: 5...30) {
                     Text("\(settings.transitionLength) seconds between games")
+                }.onSubmit {
+                    print("?????")
+                    sessionModel.config.transitionLength = settings.transitionLength
                 }
             } header: {
                 Text("Settings")

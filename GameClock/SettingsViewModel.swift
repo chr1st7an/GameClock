@@ -24,13 +24,13 @@ class SettingsViewModel: ObservableObject {
 //                UserDefaults.standard.set(sessionLength, forKey: "sessionLength")
 //            }
 //        }
-    @AppStorage("gameLength") var gameLength = 10 
+    @AppStorage("gameLength") var gameLength = 240
 //    {
 //            didSet {
 //                UserDefaults.standard.set(gameLength, forKey: "gameLength")
 //            }
 //        }
-    @AppStorage("transitionLength") var transitionLength = 2 
+    @AppStorage("transitionLength") var transitionLength = 25
 //    {
 //            didSet {
 //                UserDefaults.standard.set(transitionLength, forKey: "transitionLength")

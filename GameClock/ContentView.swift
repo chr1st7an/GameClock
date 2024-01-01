@@ -15,16 +15,18 @@ struct ContentView: View {
     var body: some View {
             ZStack{
                 if sessionModel.sessionState == .ended {
-                    HomeView().onAppear{
-                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .providesAppNotificationSettings, .provisional, .sound]) { (_,_) in
-                                
-                        }
-                    }
+                    HomeView().transition(.move(edge: .leading))
                 }else{
-                    SessionView()
+                    SessionView().transition(.move(edge: .bottom))
                 }
             }
             .environmentObject(sessionModel).environmentObject(settings)
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { _ in
+                        // App is about to terminate
+                        // Add your code here to execute a function before termination
+                        print("App is about to terminate")
+                        sessionModel.cancelAllNotifications()
+                    }
     }
 }
 struct ContentView_Previews: PreviewProvider {
