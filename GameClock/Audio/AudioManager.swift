@@ -9,6 +9,7 @@ import AVKit
 import Foundation
 import SwiftUI
 import AVFoundation
+import AudioKit
 
 class AudioManager: NSObject, ObservableObject, AVAudioPlayerDelegate {
 
@@ -39,8 +40,7 @@ class AudioManager: NSObject, ObservableObject, AVAudioPlayerDelegate {
             ]
         )
     }
-
-    func playAudio(soundName: String) {
+    func playAudio(soundName: String, fileType: String) {
         try! AVAudioSession.sharedInstance().setCategory(
             AVAudioSession.Category.playback,
             mode: AVAudioSession.Mode.default,
@@ -49,7 +49,7 @@ class AudioManager: NSObject, ObservableObject, AVAudioPlayerDelegate {
             ]
         )
         try! AVAudioSession.sharedInstance().setActive(true)
-        let path = Bundle.main.path(forResource: soundName, ofType:"mp3")
+        let path = Bundle.main.path(forResource: soundName, ofType:fileType)
         let url = URL(fileURLWithPath: path ?? "empty.mp3")
 
         do {

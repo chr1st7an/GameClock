@@ -2,113 +2,121 @@
 //  HomeView.swift
 //  GameClock
 //
-//  Created by Christian Rodriguez on 4/28/23.
+//  Created by Christian Rodriguez on 12/26/23.
 //
 
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var model : TimerViewModel
-    @Environment(\.colorScheme) var colorScheme
-    // USER SETTINGS
-    @AppStorage("isDarkMode") private var isDarkMode = false
-    @AppStorage("isAutoReplay") private var isAutoReplay = false
-    @AppStorage("countdown") private var countdown = false
-    @AppStorage("replayDelay") private var bufferLengthInSeconds = 15
-    @State var notifications : Bool = false
-    @State var showQuickSettings : Bool = false
+    @EnvironmentObject var sessionModel : SessionViewModel
+    @EnvironmentObject var settings : SettingsViewModel
+    @State var showSettings = false
 
     var body: some View {
-                VStack(spacing: 20){
-                    Spacer()
-                    // Title
-                    VStack{
-                        Image(colorScheme == .light ? "STFC_Header_light" : "STFC_HEADER_dark").resizable().frame(width: 350,height: 60)
-                        Text("GAME CLOCK").font(.custom(
-                            "RobotoRound",
-                            fixedSize: 44))
-                    }
-                    
-                    Spacer()
-                    // Start
-                    VStack{
-                        Button {
-                            let impact = UIImpactFeedbackGenerator(style: .heavy)
-                            impact.impactOccurred()
-                            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                                print(success ? "Authorization success" : "Authorization failed")
-                                print(error?.localizedDescription ?? "")
-                            }
-                            withAnimation{
-                                model.sessionState = .active
-                                model.loopState = .active
-                                model.buffering = true
-                            }
-                        } label: {
-                            Image(systemName: "sportscourt").resizable().frame(width: 150, height: 90).foregroundColor(STFCpink).shadow(radius: 0.5)
-                        }
-                        Text("tap to start session").font(.custom(
-                            "RobotoRound",
-                            fixedSize: 15)).padding(.top)
-                    }
-                    
-                    Spacer()
-                    // Settings
-                    VStack{
-                        Button {
-                            withAnimation{
-                                showQuickSettings.toggle()
-                            }
-                        } label: {
-                            HStack{
-                                Text("Session Settings")
-                                Image(systemName: showQuickSettings ? "chevron.up" : "chevron.down")
-                            }.foregroundColor(STFCgreen)
-                        }
-
-                        if showQuickSettings {
-                            Form{
-                                Section {
-                                    Picker("Session Length", selection: $model.sessionLengthSeconds) {
-                                            Text("1 hour").tag(3600)
-                                            Text("1.5 hours").tag(5400)
-                                            Text("2 hours").tag(7200)
-                                        }
-                                    Stepper(value: $bufferLengthInSeconds, in: 5...30) {
-                                        Text("\(bufferLengthInSeconds) seconds between games")
-                                    }
-                                    Picker("Voice", selection: $model.voiceSelection) {
-                                            Text("Male 1").tag("male1")
-                                            Text("Female 1").tag("female1")
-                                            Text("Monster").tag("monster")
-                                        }
-                                    Picker("Announcement Frequency", selection: $model.frequencySelection) {
-                                            Text("Low").tag("low")
-                                            Text("Medium").tag("medium")
-                                            Text("High").tag("high")
-                                        }
-                                    Toggle("10 second countdown", isOn: $countdown)
-                                } header: {
-                                    Text("Session Settings")
-                                }
-    //                        footer: {
-    //                                VStack(alignment: .leading) {
-    //                                    Text("Low: 90 sec, 30 sec")
-    //                                    Text("Medium: 2 min, 1 min, 30 sec")
-    //                                    Text("High: 3 min, 2 min, 90 sec, 1 min, 30 sec")
-    //                                }.fontWeight(.light)
-    //                            }
-                            }
-                        }
-                    }
-                    Spacer()
-                }
-            
+        ZStack{
+            ColorPalette.secondaryBackground.ignoresSafeArea()
+            VStack(spacing:100){
+                Spacer()
+                TitleBanner()
+                Spacer()
+                StartButton()
+                UserAgreement()
+            }
+        }.sheet(isPresented: $showSettings, content: {
+            SettingsSheet()
+        })
     }
+    @ViewBuilder
+    func TitleBanner() -> some View {
+        VStack(spacing:10){
+            Text("Game Clock").font(Font.custom("Orbitron-Regular", size: 50)).foregroundStyle(ColorPalette.primaryText)
+            Image("LightIcon").resizable().frame(width: 80, height: 95)
+        }
+    }
+        
+    @ViewBuilder
+    func StartButton() -> some View {
+        VStack(spacing:15){
+            Button{
+                let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+                impactFeedbackGenerator.prepare()
+                impactFeedbackGenerator.impactOccurred()
+                let config = SessionConfig(sessionLength: settings.sessionLength, gameLength: settings.gameLength, transitionLength: settings.transitionLength, countDown: settings.countDown, colorPreference: settings.colorPreference)
+                withAnimation {
+                    sessionModel.sessionState = .start(config)
+                    sessionModel.gameState = .start
+                }
+            }label: {
+                Rectangle().stroke(lineWidth: 5).frame(width: .infinity, height: 50).foregroundStyle(ColorPalette.primaryText).overlay {
+                        Text("Start Session").font(Font.custom("Play-Bold", size: 23)).foregroundStyle(ColorPalette.primaryText)
+                }.background(ColorPalette.primaryBackground.opacity(0.8))
+                    .padding(.horizontal, 85)
+            }
+            SettingsButton()
+        }
+    }
+    @ViewBuilder
+    func UserAgreement() -> some View {
+        HStack{
+            Image(systemName: "info.circle").resizable().frame(width: 22, height: 22).foregroundStyle(ColorPalette.secondaryText)
+            Text("By starting a session you are agreeing to receiving notifications over the course of the session length that emit audio announcements.").font(Font.custom("Play-Regular", size: 10)).foregroundStyle(ColorPalette.secondaryText)            }.padding()
+
+    }
+    
+    @ViewBuilder
+    func SettingsButton() -> some View {
+        Button{
+            withAnimation {
+                showSettings = true
+            }
+        }label: {
+            HStack{
+                Image(systemName: "gear").resizable().frame(width: 25, height: 25)
+                Text("Settings").font(Font.custom("Play-Regular", size: 20))
+            }.foregroundStyle(ColorPalette.secondaryForeground)
+        }
+    }
+    
+    @ViewBuilder
+    func SettingsSheet() -> some View {
+        Form{
+            Section {
+                Picker("Session Length", selection: $settings.sessionLength) {
+                    Text("1 hour").tag(3600)
+                    Text("1.5 hours").tag(5400)
+                    Text("2 hours").tag(7200)
+                }
+                Picker("Game Length", selection: $settings.gameLength) {
+                    Text("3 minutes").tag(180)
+                    Text("4 minutes").tag(240)
+                    Text("5 minutes").tag(300)
+                    Text("6 minutes").tag(360)
+                }
+                Stepper(value: $settings.transitionLength, in: 5...30) {
+                    Text("\(settings.transitionLength) seconds between games")
+                }
+                Toggle(isOn: $settings.countDown, label: {
+                    Text("10 second end of game count down")
+                })
+            } header: {
+                Text("Session Settings")
+            }
+            Section {
+                Picker("Color Palette", selection: $settings.colorPreference) {
+                    Text("System").tag("system")
+                    Text("Light").tag("light")
+                    Text("Dark").tag("dark")
+                }.pickerStyle(.segmented)
+            } header: {
+                Text("Appearance")
+            }
+        }
+    }
+    
+    
+    
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-    }
+#Preview {
+    HomeView().environmentObject(SessionViewModel()).environmentObject(SettingsViewModel())
 }

@@ -6,16 +6,14 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct TimerView: View {
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var model : TimerViewModel
     
-    // USER SETTINGS
+    // UI SETTINGS
     @AppStorage("isDarkMode") private var isDarkMode = false
-    @AppStorage("isAutoReplay") private var isAutoReplay = false
-    @AppStorage("replayDelay") private var bufferLengthInSeconds = 15
-    @State var notifications : Bool = false
 
     // Session Status
     @GestureState var endSession = false
@@ -104,6 +102,18 @@ struct TimerView: View {
                     .buttonStyle(PlayButtonStyle())
                     .padding(.bottom, 30)
                 }
+                Button {
+                    // text to speach voice announcement
+                    textToSpeech(inputMessage: "Announcement")
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 35).foregroundColor(Color("iconButton").opacity(0.9)).frame(width: 150, height: 30)
+                        Text("announce time left").font(.custom(
+                            "RobotoRound",
+                            fixedSize: 12)).foregroundColor(Color("secondaryText"))
+                    }
+                }
+
             }.opacity(model.buffering ? 0 : 1)
             Button {
                 let impact = UIImpactFeedbackGenerator(style: .medium)
@@ -131,12 +141,12 @@ struct TimerView: View {
                     Text("\(model.secondsToBufferCompletion) seconds ")
                         .font(.largeTitle).foregroundColor(Color("text"))
                 }else{
-                    Text(model.secondsToGameCompletion.asTimestamp)
+                    Text(model.secondsToGameCompletion.asShortTimestamp)
                         .font(.largeTitle).foregroundColor(Color("text"))
                 }
                 HStack {
                     Image(systemName: "soccerball").foregroundColor(Color("text"))
-                    Text("\(gamesLeft) games ").foregroundColor(Color("text"))
+                    Text("\(gamesLeft) games left").foregroundColor(Color("text"))
                 }
             }
         }
@@ -158,12 +168,13 @@ struct TimerView: View {
                                 }
                             }
                         }
+                        // BUFFER AND NEXT GAME RESET
                         .onReceive(model.buffer) { tick in
                             model.secondsToBufferCompletion -= 1
                             print("\(model.secondsToBufferCompletion) to next game")
                             if model.secondsToBufferCompletion < 1 {
                                 withAnimation {
-                                    model.secondsToGameCompletion = 240
+                                    model.secondsToGameCompletion = model.gameLengthSeconds
                                     model.buffering = false
                                     gamesLeftUpdate()
                                 }
@@ -172,8 +183,8 @@ struct TimerView: View {
                     
                     
                     timerControls
-                    Spacer()
-                    Text(model.secondsToSessionCompletion.asTimestamp)
+//                    Spacer()
+                    Text(model.secondsToSessionCompletion.asLongTimestamp)
                         .font(.title).foregroundColor(Color("text")).shadow(radius: 0.5)
                     ProgressView(value: (1 - model.sessionProgress), total: 1) {
                     }.progressViewStyle(.linear).frame(width: proxy.size.width * 0.75).tint(STFCpink)
@@ -181,7 +192,7 @@ struct TimerView: View {
                 }
                 .padding(.vertical)
                 .foregroundColor(.white).onChange(of: model.secondsToSessionCompletion) { timeLeft in
-                    gamesLeft = timeLeft / (model.gameLengthSeconds + bufferLengthInSeconds)
+                    gamesLeft = timeLeft / (model.gameLengthSeconds + model.bufferLengthSeconds)
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
@@ -240,8 +251,8 @@ struct TimerView: View {
             }
             .onAppear {
                 model.buffer.connect()
-                model.secondsToBufferCompletion = bufferLengthInSeconds
-//                model.audio.playAudio(soundName: "start")
+                model.secondsToBufferCompletion = model.bufferLengthSeconds
+//                gamesLeft = model.sessionLengthSeconds / model.gameLengthSeconds
             }
         }.sheet(isPresented: $showSettings) {
             settingsView()
@@ -266,10 +277,10 @@ struct TimerView: View {
         .onChange(of: model.buffering){ buffering in
             if buffering {
                 model.buffer.connect()
-                model.secondsToBufferCompletion = bufferLengthInSeconds
+                model.secondsToBufferCompletion = model.bufferLengthSeconds
             }else{
                 model.buffer.connect().cancel()
-                model.secondsToBufferCompletion = bufferLengthInSeconds
+                model.secondsToBufferCompletion = model.bufferLengthSeconds
                 model.buffer = Timer.publish(every: 1, on: .main, in: .common)
             }
         }
@@ -281,7 +292,7 @@ struct TimerView: View {
         NavigationView {
             Form {
                 Section(header: Text("Notifications")) {
-                    Toggle(isOn: $notifications) {
+                    Toggle(isOn: $model.tips) {
                         Text("Receive game captaining tips")
                     }.animation(.default, value: testToggle)
                 }
@@ -293,8 +304,8 @@ struct TimerView: View {
 
 
                 Section(header: Text("Session")) {
-                    Stepper(value: $bufferLengthInSeconds, in: 5...30) {
-                        Text("\(bufferLengthInSeconds) seconds between games")
+                    Stepper(value: $model.bufferLengthSeconds, in: 5...30) {
+                        Text("\(model.bufferLengthSeconds) seconds between games")
                     }
                 }
                 Section {
@@ -308,6 +319,7 @@ struct TimerView: View {
                             Text("Medium").tag("medium")
                             Text("High").tag("high")
                         }
+                    Toggle("10 second countdown", isOn: $model.countdown)
                 } header: {
                     Text("Audio")
                 } footer: {
@@ -321,7 +333,7 @@ struct TimerView: View {
                 Button("Restore Settings") {
                     model.voiceSelection = "male1"
                     model.frequencySelection = "medium"
-                    bufferLengthInSeconds = 15
+                    model.bufferLengthSeconds = 15
                 }
             }
             .navigationBarTitle(Text("Settings"))
@@ -332,6 +344,16 @@ struct TimerView: View {
             model.audio.playAudio(soundName: "\(gamesLeft)")
             print("remember to check all players in")
         }
+    }
+    
+    func textToSpeech(inputMessage: String){
+        let speechSynthesizer = AVSpeechSynthesizer()
+        let utterance = AVSpeechUtterance(string: inputMessage)
+        utterance.pitchMultiplier = 1.0
+        utterance.rate = 0.5
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
+         
+        speechSynthesizer.speak(utterance)
     }
     }
 

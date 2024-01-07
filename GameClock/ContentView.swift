@@ -6,19 +6,36 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct ContentView: View {
-    @StateObject private var model = TimerViewModel()
+    @Environment(\.colorScheme) private var scheme
+    @StateObject private var sessionModel = SessionViewModel()
+    @StateObject private var settings = SettingsViewModel()
+
     var body: some View {
             ZStack{
-                if model.sessionState == .ended {
-                    HomeView()
+                if sessionModel.sessionState == .ended {
+                    HomeView().transition(.move(edge: .leading))
                 }else{
-                    TimerView()
+                    SessionView().transition(.move(edge: .bottom))
                 }
             }
-            .environmentObject(model)
+            .preferredColorScheme(getPreferredColorScheme())
+            .environmentObject(sessionModel).environmentObject(settings)
     }
+    
+    private func getPreferredColorScheme() -> ColorScheme? {
+        switch settings.colorPreference {
+        case "light":
+            return .light
+        case "dark":
+            return .dark
+        default:
+            return nil
+        }
+    }
+    
 }
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
