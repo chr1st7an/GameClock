@@ -9,20 +9,21 @@ import SwiftUI
 
 struct SoundBoardView: View {
 //    private var favSounds: [String] = ["SIUUU"]
-    @EnvironmentObject var model : TimerViewModel
+    @EnvironmentObject var sessionModel : SessionViewModel
     @AppStorage("favoriteSounds") private var favoriteData : Data = Data()
     @State var favoriteSounds : [String] = [String]()
     
     @State var editingFavorites = false
     @State var showingFavorites = true
-    @State var showingGoal = false
-    @State var showingCrowd = false
-    @State var showingCommentary = false
-    @State var showingOther = false
+    @State var showingGoal = true
+    @State var showingCrowd = true
+    @State var showingCommentary = true
+    @State var showingOther = true
     
     var body: some View {
-        NavigationView {
-            VStack {
+
+            VStack(spacing: 0) {
+                
                 ScrollView(.vertical){
                     soundPanel(editingFavorites: $editingFavorites, toggleVal: $showingFavorites, favoriteSounds: $favoriteSounds, header: "Favorites", soundSet: favoriteSounds, iconName: "star")
                     soundPanel(editingFavorites: $editingFavorites, toggleVal: $showingGoal, favoriteSounds: $favoriteSounds, header: "Goal", soundSet: goalSounds, iconName: "soccerball")
@@ -31,7 +32,6 @@ struct SoundBoardView: View {
                     soundPanel(editingFavorites: $editingFavorites, toggleVal: $showingOther, favoriteSounds: $favoriteSounds, header: "Other", soundSet: otherSounds, iconName: "person.wave.2.fill")
                 }
             }
-            .navigationTitle("Sound Board")
             .onChange(of: favoriteSounds) { favs in
                 print(favoriteSounds)
                 guard let favorites = try? JSONEncoder().encode(favs) else { return }
@@ -46,7 +46,6 @@ struct SoundBoardView: View {
 
             }
         }
-    }
 }
 struct soundPanel: View{
     @Binding var editingFavorites : Bool
@@ -56,11 +55,9 @@ struct soundPanel: View{
     var soundSet : [String]
     var iconName: String
     var body: some View{
-        VStack{
+        VStack(spacing: 10){
             HStack{
-                Text(header).font(.custom(
-                    "RobotoRound",
-                    fixedSize: 22))
+                Text(header).font(Font.custom("Play-Regular", size: 20))
                 Image(systemName: iconName)
                 Spacer()
                 Button {
@@ -68,31 +65,29 @@ struct soundPanel: View{
                         toggleVal.toggle()
                     }
                 } label: {
-                    Text(toggleVal ? "hide" : "show").foregroundColor(STFCpink)
+                    Text(toggleVal ? "hide" : "show").font(Font.custom("Play-Bold", size: 13)).foregroundStyle(ColorPalette.secondaryText)
                 }
-            }.padding(.horizontal, 25)
+            }.padding(.horizontal, 5)
             Divider().padding(.horizontal)
             if toggleVal{
                 ScrollView(.horizontal){
                     HStack{
                         if header == "Favorites"{
                             VStack {
-                            Button {
-                                let impact = UIImpactFeedbackGenerator(style: .medium)
-                                impact.impactOccurred()
-                                withAnimation {
-                                    editingFavorites.toggle()
+                                Button {
+                                    let impact = UIImpactFeedbackGenerator(style: .medium)
+                                    impact.impactOccurred()
+                                    withAnimation {
+                                        editingFavorites.toggle()
+                                    }
+                                }label: {
+                                    Image(systemName: editingFavorites ? "xmark" : "square.and.pencil")
                                 }
-                            }label: {
-                                Image(systemName: editingFavorites ? "xmark" : "square.and.pencil")
-                            }
-                            .buttonStyle(PlusEdit())
-                            .padding(.horizontal).padding(.top)
-                            Text(editingFavorites ? "save" : "edit").fontWeight(.light).font(.custom(
-                                "RobotoRound",
-                                fixedSize: 15)).padding(.bottom)
-                        }}
-                        ForEach(values: soundSet) { sound in
+                                .padding(.horizontal).padding(.top)
+                                Text(editingFavorites ? "save" : "edit").font(Font.custom("Play-Regular", size: 15))
+                            }.foregroundStyle(ColorPalette.primaryText)
+                        }
+                        ForEach(soundSet, id: \.self) { sound in
                             soundButton(soundName: sound, editingFavorites: $editingFavorites, favoriteSounds: $favoriteSounds)
                         }
         
@@ -104,7 +99,7 @@ struct soundPanel: View{
     }
 }
 struct soundButton: View {
-    @EnvironmentObject var model : TimerViewModel
+    @EnvironmentObject var sessionModel : SessionViewModel
     var soundName: String
     @Binding var editingFavorites : Bool
     @Binding var favoriteSounds : [String]
@@ -125,30 +120,33 @@ struct soundButton: View {
                         }
                     }
                 }else{
-                    model.audio.playAudio(soundName: soundName)
+                    sessionModel.audio.playAudio(soundName: soundName, fileType: "mp3")
                 }
             }label: {
-                if editingFavorites{
-                    if favoriteSounds.contains(soundName) {
-                        Image(systemName:"minus")
-                    }else{
-                        Image(systemName:"plus")
+                ZStack{
+                    Circle().stroke(ColorPalette.secondaryForeground, lineWidth: 2).frame(width: 50).overlay{
+                        Circle().foregroundStyle(ColorPalette.secondaryBackground).frame(width: 50)
                     }
-                }else{
-                    Image(systemName: "waveform.circle")}
+                    if editingFavorites{
+                        if favoriteSounds.contains(soundName) {
+                            Image(systemName:"minus")
+                        }else{
+                            Image(systemName:"plus")
+                        }
+                    }else{
+                        Image(systemName: "waveform")
+                    }
+                }.foregroundStyle(.white)
             }
-            .buttonStyle(SoundButtonStyle1())
             .padding(.horizontal).padding(.top)
-            Text(soundName).fontWeight(.light).font(.custom(
-                "RobotoRound",
-                fixedSize: 15)).padding(.bottom)
-        }
+            Text(soundName).fontWeight(.light).font(Font.custom("Orbitron-Regular", size: 10)).padding(5)
+        }.foregroundStyle(ColorPalette.primaryText)
     }
 }
-let goalSounds = ["stadium-goal","GOAL", "SIUUU", "GolGolGol", "aguero"]
+let goalSounds = ["aguero","stadium-goal","GOAL", "SIUUU", "GolGolGol"]
 let crowdSounds = ["champions-league","Defense-chant", "OleOleOle", "Booing", "Victory-chant"]
-let commentarySounds = ["absolutely_breathtaking","oh-yes_martin-tyler", "Ankara-Messi", "astonishing","What-a-Save", "ray_hudson_dream"]
-let otherSounds = ["i-am-jose-mourinho","airhorn", "downer_noise", "bobo", "anime-wow", "zlatan", "lebron-james-of-soccer"]
+let commentarySounds = ["astonishing", "breathtaking","oh-yes", "dream", "Ankara-Messi", "What-a-Save"]
+let otherSounds = ["Sirens", "zlatan", "lebron-james", "jose-mourinho", "anime-wow", "bobo", "womp-womp", "airhorn"]
 
 struct SoundBoardView_Previews: PreviewProvider {
     static var previews: some View {

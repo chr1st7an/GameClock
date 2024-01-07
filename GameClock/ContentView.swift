@@ -9,6 +9,7 @@ import SwiftUI
 import UserNotifications
 
 struct ContentView: View {
+    @Environment(\.colorScheme) private var scheme
     @StateObject private var sessionModel = SessionViewModel()
     @StateObject private var settings = SettingsViewModel()
 
@@ -20,14 +21,21 @@ struct ContentView: View {
                     SessionView().transition(.move(edge: .bottom))
                 }
             }
+            .preferredColorScheme(getPreferredColorScheme())
             .environmentObject(sessionModel).environmentObject(settings)
-            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { _ in
-                        // App is about to terminate
-                        // Add your code here to execute a function before termination
-                        print("App is about to terminate")
-                        sessionModel.cancelAllNotifications()
-                    }
     }
+    
+    private func getPreferredColorScheme() -> ColorScheme? {
+        switch settings.colorPreference {
+        case "light":
+            return .light
+        case "dark":
+            return .dark
+        default:
+            return nil
+        }
+    }
+    
 }
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

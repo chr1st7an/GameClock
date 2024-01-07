@@ -41,7 +41,7 @@ struct HomeView: View {
                 let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
                 impactFeedbackGenerator.prepare()
                 impactFeedbackGenerator.impactOccurred()
-                let config = SessionConfig(sessionLength: settings.sessionLength, gameLength: settings.gameLength, transitionLength: settings.transitionLength)
+                let config = SessionConfig(sessionLength: settings.sessionLength, gameLength: settings.gameLength, transitionLength: settings.transitionLength, countDown: settings.countDown, colorPreference: settings.colorPreference)
                 withAnimation {
                     sessionModel.sessionState = .start(config)
                     sessionModel.gameState = .start
@@ -82,7 +82,6 @@ struct HomeView: View {
         Form{
             Section {
                 Picker("Session Length", selection: $settings.sessionLength) {
-                    Text("Test - 20 minutes").tag(1200)
                     Text("1 hour").tag(3600)
                     Text("1.5 hours").tag(5400)
                     Text("2 hours").tag(7200)
@@ -92,16 +91,24 @@ struct HomeView: View {
                     Text("4 minutes").tag(240)
                     Text("5 minutes").tag(300)
                     Text("6 minutes").tag(360)
-                    Text("Test - 15 seconds").tag(15)
                 }
                 Stepper(value: $settings.transitionLength, in: 5...30) {
                     Text("\(settings.transitionLength) seconds between games")
-                }.onSubmit {
-                    print("?????")
-                    sessionModel.config.transitionLength = settings.transitionLength
                 }
+                Toggle(isOn: $settings.countDown, label: {
+                    Text("10 second end of game count down")
+                })
             } header: {
-                Text("Settings")
+                Text("Session Settings")
+            }
+            Section {
+                Picker("Color Palette", selection: $settings.colorPreference) {
+                    Text("System").tag("system")
+                    Text("Light").tag("light")
+                    Text("Dark").tag("dark")
+                }.pickerStyle(.segmented)
+            } header: {
+                Text("Appearance")
             }
         }
     }

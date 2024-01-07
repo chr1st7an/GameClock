@@ -9,6 +9,7 @@ import AVKit
 import Foundation
 import SwiftUI
 import AVFoundation
+import AudioKit
 
 class AudioManager: NSObject, ObservableObject, AVAudioPlayerDelegate {
 
@@ -39,7 +40,6 @@ class AudioManager: NSObject, ObservableObject, AVAudioPlayerDelegate {
             ]
         )
     }
-
     func playAudio(soundName: String, fileType: String) {
         try! AVAudioSession.sharedInstance().setCategory(
             AVAudioSession.Category.playback,

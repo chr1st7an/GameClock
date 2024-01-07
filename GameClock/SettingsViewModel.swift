@@ -13,6 +13,8 @@ struct SessionConfig: Codable, Hashable {
     var sessionLength : Int
     var gameLength : Int
     var transitionLength : Int
+    var countDown: Bool
+    var colorPreference: String
     
 }
 
@@ -31,6 +33,12 @@ class SettingsViewModel: ObservableObject {
 //            }
 //        }
     @AppStorage("transitionLength") var transitionLength = 25
+    
+    @AppStorage("countDown") var countDown = true
+    
+    @AppStorage("colorPreference") var colorPreference = "system"
+    
+
 //    {
 //            didSet {
 //                UserDefaults.standard.set(transitionLength, forKey: "transitionLength")

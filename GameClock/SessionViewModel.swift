@@ -11,7 +11,7 @@ import SwiftUI
 class SessionViewModel: ObservableObject {
     
     // Default values to be overridden by User Defaults upon session start
-    @Published var config = SessionConfig(sessionLength: 3600, gameLength: 240, transitionLength: 25)
+    @Published var config = SessionConfig(sessionLength: 3600, gameLength: 240, transitionLength: 25, countDown: true, colorPreference: "system")
     @Published var audio: AudioManager = AudioManager()
     @Published var nullifyAudio = false
 
@@ -111,7 +111,7 @@ class SessionViewModel: ObservableObject {
             guard let self else { return }
             if self.gameSecondsRemaining % 30 == 0 && !nullifyAudio {
                 let soundName = findSoundName(indicator: gameSecondsRemaining)
-                self.audio.playAudio(soundName: soundName, fileType: "caf")
+                self.audio.playAudio(soundName: soundName, fileType: "mp3")
                 print("Announcement Sounding: \(soundName)")
             }
 
@@ -120,7 +120,9 @@ class SessionViewModel: ObservableObject {
             withAnimation{
                 self.gameProgress = Float(self.gameSecondsRemaining) / Float(self.config.gameLength)
             }
-            if self.gameSecondsRemaining < 0 {
+            if self.gameSecondsRemaining == 10 && config.countDown {
+                self.audio.playAudio(soundName: "countdown", fileType: "mp3")
+            }else if self.gameSecondsRemaining < 0 {
                 self.gameState = .ended
             }
             switch UIApplication.shared.applicationState {
@@ -382,11 +384,18 @@ class SessionViewModel: ObservableObject {
         let second = soundIndicator % 60
         
         print("\(soundName) notification scheduled \(secondsFromNow) seconds from now")
+        
+        if soundIndicator == 30 && config.countDown {
+            scheduleTimerNotification(secondsFromNow: secondsFromNow + 20, soundIndicator: 420)
+        }
 
         let content = UNMutableNotificationContent()
         content.title = "\(minute) minutes and \(second) seconds remaining"
+        if soundIndicator == 420 {
+            content.title = "10 second countdown"
+        }
         content.sound = UNNotificationSound.default
-        content.sound = .criticalSoundNamed(UNNotificationSoundName(rawValue: "\(soundName).caf"), withAudioVolume: 3.0)
+        content.sound = .criticalSoundNamed(UNNotificationSoundName(rawValue: "\(soundName).mp3"), withAudioVolume: 1.0)
         // Allows notification to play sound even on mute
         content.interruptionLevel = .critical
 
@@ -408,7 +417,7 @@ class SessionViewModel: ObservableObject {
     
     func findSoundName(indicator: Int) -> String {
         
-        var soundName = "default.caf"
+        var soundName = ""
         
         let announcementsInCycle = config.gameLength / 30
         let soundPoint = indicator / 30
@@ -418,7 +427,10 @@ class SessionViewModel: ObservableObject {
         }else if soundPoint == 0{
             // final whistle
             soundName = "finalWhistle"
-        }else{
+        }else if indicator == 420 {
+            soundName = "countdown"
+        }
+        else{
             soundName = indicator.description
         }
 

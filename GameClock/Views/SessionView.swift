@@ -15,13 +15,15 @@ struct SessionView: View {
     @State var confirmEndSession = false
     @State var confirmEndGame = false
 
+    @State var showSettings = false
+    @State var showInfo = false
     var body: some View {
         NavigationStack{
             ZStack{
                 ColorPalette.primaryBackground.ignoresSafeArea()
                 TabView(selection: $selectedTab){
                     TimerView().tag(SessionTab.timer)
-                    SoundBoardView().tag(SessionTab.soundBoard)
+                    SoundBoardTab().tag(SessionTab.soundBoard)
                     // add settings, rules, etc
                 }.tabViewStyle(.page(indexDisplayMode: .always)).ignoresSafeArea(edges: .bottom)
             }.toolbar {
@@ -43,11 +45,17 @@ struct SessionView: View {
                     HStack{
                         Button{
                             // show app infographic, suggested rules
+                            withAnimation {
+                                self.showInfo = true
+                            }
                         }label: {
                             Image(systemName: "info.circle").resizable().frame(width: 25, height: 25).foregroundStyle(ColorPalette.primaryText)
                         }
                         Button{
                             // show in-session settings
+                            withAnimation {
+                                self.showSettings = true
+                            }
                         }label: {
                             Image(systemName: "gear").resizable().frame(width: 25, height: 25).foregroundStyle(ColorPalette.primaryText)
                         }
@@ -79,6 +87,12 @@ struct SessionView: View {
             print("App: \(newPhase)")
             sessionModel.onChangeOfScenePhase(newPhase)
                     }
+        .sheet(isPresented: $showSettings, content: {
+            SettingsSheet()
+        })
+        .sheet(isPresented: $showInfo, content: {
+            InfoView()
+        })
     }
     
     @ViewBuilder
@@ -219,21 +233,44 @@ struct SessionView: View {
     }
     
     @ViewBuilder
-    func SoundBoardView() -> some View {
+    func SoundBoardTab() -> some View {
         ZStack{
             ColorPalette.primaryBackground.ignoresSafeArea()
             VStack{
                 RectangularProgressView(progress: $sessionModel.gameProgress).frame(width: .infinity, height: 200).overlay {
-                    VStack{
+                    VStack(spacing:3){
                         Text(sessionModel.gameState == .restarting ? sessionModel.transitionSecondsRemaining.asTimestamp : sessionModel.gameSecondsRemaining.asTimestamp).font(Font.custom("Play-Bold", size: 55)).foregroundStyle(ColorPalette.primaryText)
                         TimerControls(offset: 0).padding(.bottom)
                     }
-                }
-                ScrollView(.vertical){
-                    
-                }
-            }.padding(.all, 50)
+                }.padding(.all, 25)
+                SoundBoardView().padding(.bottom)
+                
+            }
             
+        }
+    }
+    
+    @ViewBuilder
+    func SettingsSheet() -> some View {
+        Form{
+            Section {
+                Picker("Game Length", selection: $sessionModel.config.gameLength) {
+                    Text("3 minutes").tag(180)
+                    Text("4 minutes").tag(240)
+                    Text("5 minutes").tag(300)
+                    Text("6 minutes").tag(360)
+                }
+                Stepper(value: $sessionModel.config.transitionLength, in: 5...30) {
+                    Text("\(sessionModel.config.transitionLength) seconds between games")
+                }
+                
+                Toggle(isOn: $sessionModel.config.countDown, label: {
+                    Text("10 second end of game count down")
+                })
+                
+            } header: {
+                Text("Settings")
+            }
         }
     }
 }
@@ -243,7 +280,7 @@ enum SessionTab {
     case soundBoard
 }
 
-var GoalSounds = ["astonishing", "oh-yes_martin-tyler", "absolutely_breathtaking", "GolGolGol", "GOAL", "SIUUU", "aguero"]
+var GoalSounds = ["astonishing", "oh-yes", "breathtaking", "GolGolGol", "GOAL", "SIUUU", "aguero"]
 
 #Preview {
     SessionView().environmentObject(SessionViewModel())
