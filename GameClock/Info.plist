@@ -16,6 +16,15 @@
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
+  <key>NSAppTransportSecurity</key> 
+<dict>     
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+    <key>NSAllowsArbitraryLoadsForMedia</key>
+    <true/>
+    <key>NSAllowsArbitraryLoadsInWebContent</key>
+    <true/>
+</dict>
 	<key>GADApplicationIdentifier</key>
 <string>ca-app-pub-1819887392536448~4299713758</string>
 <key>SKAdNetworkItems</key>

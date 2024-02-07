@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
+
 
 @main
 struct GameClockApp: App {
 //    @AppStorage("isDarkMode") private var isDarkMode = false
     init(){
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .providesAppNotificationSettings, .provisional, .sound]) { success, error in
             if success {
