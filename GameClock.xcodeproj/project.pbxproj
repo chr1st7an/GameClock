@@ -26,6 +26,7 @@
 		363B1D7D2A2FEA330041AEDE /* SIUUU.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D7C2A2FEA330041AEDE /* SIUUU.mp3 */; };
 		363B1D7F2A2FFABE0041AEDE /* Booing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D7E2A2FFABE0041AEDE /* Booing.mp3 */; };
 		363B1D832A30004F0041AEDE /* Victory-chant.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 363B1D822A30004F0041AEDE /* Victory-chant.mp3 */; };
+		3689A2482B7439B40059796E /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 3689A2472B7439B40059796E /* GoogleMobileAds */; };
 		36940BD629FC578F006B7B6D /* GameClockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36940BD529FC578F006B7B6D /* GameClockApp.swift */; };
 		36940BD829FC578F006B7B6D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36940BD729FC578F006B7B6D /* ContentView.swift */; };
 		36940BDA29FC5791006B7B6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36940BD929FC5791006B7B6D /* Assets.xcassets */; };
@@ -133,6 +134,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3689A2482B7439B40059796E /* GoogleMobileAds in Frameworks */,
 				3633357D2B4895D10046ED79 /* AudioKitUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -335,6 +337,7 @@
 			name = GameClock;
 			packageProductDependencies = (
 				3633357C2B4895D10046ED79 /* AudioKitUI */,
+				3689A2472B7439B40059796E /* GoogleMobileAds */,
 			);
 			productName = GameClock;
 			productReference = 36940BD229FC578F006B7B6D /* GameClock.app */;
@@ -366,6 +369,7 @@
 			mainGroup = 36940BC929FC578F006B7B6D;
 			packageReferences = (
 				3633357B2B4895D10046ED79 /* XCRemoteSwiftPackageReference "AudioKitUI" */,
+				3689A2462B7439B40059796E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 36940BD329FC578F006B7B6D /* Products */;
 			projectDirPath = "";
@@ -593,7 +597,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.STFC.GameClock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -631,7 +636,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.STFC.GameClock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -675,6 +681,14 @@
 				minimumVersion = 0.3.6;
 			};
 		};
+		3689A2462B7439B40059796E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -682,6 +696,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3633357B2B4895D10046ED79 /* XCRemoteSwiftPackageReference "AudioKitUI" */;
 			productName = AudioKitUI;
+		};
+		3689A2472B7439B40059796E /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3689A2462B7439B40059796E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
