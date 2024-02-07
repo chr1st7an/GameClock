@@ -15,12 +15,17 @@ struct HomeView: View {
     var body: some View {
         ZStack{
             ColorPalette.secondaryBackground.ignoresSafeArea()
-            VStack(spacing:100){
+            VStack(spacing:50){
                 Spacer()
                 TitleBanner()
                 Spacer()
                 StartButton()
                 UserAgreement()
+            }.safeAreaInset(edge: .bottom) {
+                Banner(bannerID: "", width: 400)
+            }
+            .safeAreaInset(edge: .top) {
+                Banner(bannerID: "", width: 400)
             }
         }.sheet(isPresented: $showSettings, content: {
             SettingsSheet()
