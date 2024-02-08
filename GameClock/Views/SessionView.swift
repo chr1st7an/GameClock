@@ -93,6 +93,7 @@ struct SessionView: View {
         .sheet(isPresented: $showInfo, content: {
             InfoView()
         })
+
     }
     
     @ViewBuilder
@@ -113,7 +114,9 @@ struct SessionView: View {
     
     @ViewBuilder
     func TimerControls(offset: CGFloat) -> some View{
-            ZStack{
+            VStack{
+                Banner(bannerID: sessionBanner1, width: 300)
+                ZStack{
                 Rectangle().frame(width: .infinity, height: 75).foregroundStyle(ColorPalette.primaryBackground).shadow(color: ColorPalette.secondaryText, radius: 8, x: 0, y: 5)
                 switch sessionModel.gameState{
                 case .active, .paused, .ended, .start:
@@ -187,7 +190,7 @@ struct SessionView: View {
                     }.frame(width: .infinity, height: 75)
                 }
                 
-            }.offset(y: offset).padding(.horizontal, 40)
+            }}.offset(y: offset).padding(.horizontal, 40)
 
     }
     
@@ -237,6 +240,7 @@ struct SessionView: View {
         ZStack{
             ColorPalette.primaryBackground.ignoresSafeArea()
             VStack{
+                Banner(bannerID: sessionBanner1, width: 300)
                 RectangularProgressView(progress: $sessionModel.gameProgress).frame(width: .infinity, height: 200).overlay {
                     VStack(spacing:3){
                         Text(sessionModel.gameState == .restarting ? sessionModel.transitionSecondsRemaining.asTimestamp : sessionModel.gameSecondsRemaining.asTimestamp).font(Font.custom("Play-Bold", size: 55)).foregroundStyle(ColorPalette.primaryText)

@@ -22,10 +22,10 @@ struct HomeView: View {
                 StartButton()
                 UserAgreement()
             }.safeAreaInset(edge: .bottom) {
-                Banner(bannerID: "", width: 400)
+                Banner(bannerID: homeBanner1, width: 400)
             }
             .safeAreaInset(edge: .top) {
-                Banner(bannerID: "", width: 400)
+                Banner(bannerID: homeBanner2, width: 400)
             }
         }.sheet(isPresented: $showSettings, content: {
             SettingsSheet()
