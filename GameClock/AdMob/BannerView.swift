@@ -7,8 +7,7 @@ private struct BannerVC: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let view = GADBannerView(adSize: GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(width))
         let viewController = UIViewController()
-        view.adUnitID = "ca-app-pub-3940256099942544/2934735716"
-//        view.adUnitID = bannerID
+        view.adUnitID = bannerUnitID
         view.rootViewController = viewController
         viewController.view.addSubview(view)
         view.load(GADRequest())
